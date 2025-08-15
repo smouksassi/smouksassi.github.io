@@ -1,6 +1,6 @@
 ---
 title: "Welcome To My Blog"
-author: "Tristan O'Malley"
+author: "Samer Mouksassi"
 date: "2025-08-12"
 categories: [news]
 ---

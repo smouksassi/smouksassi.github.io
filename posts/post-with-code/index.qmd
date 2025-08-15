@@ -1,6 +1,6 @@
 ---
 title: "Post With Code"
-author: "Harlow Malloc"
+author: "Samer Mouksassi"
 date: "2025-08-15"
 categories: [news, code, analysis]
 image: "image.jpg"
