@@ -7,9 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Samer Mouksassi">
-<meta name="dcterms.date" content="2025-08-12">
+<meta name="dcterms.date" content="2025-08-15">
 
-<title>Welcome To My Blog – smouksassi.github.io</title>
+<title>Welcome To Samer’s Blog – smouksassi.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
     <a class="nav-link" href="../../about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">Samer Mouksassi</span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/"> <i class="bi bi-github" role="img">
@@ -116,7 +116,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Welcome To My Blog</h1>
+      <h1 class="title">Welcome To Samer’s Blog</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">news</div>
               </div>
@@ -136,7 +136,7 @@ ul.task-list li input[type="checkbox"] {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">August 12, 2025</p>
+        <p class="date">August 15, 2025</p>
       </div>
     </div>
     
@@ -155,9 +155,17 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<p>This is the first post in my personal blog. Welcome! I have been working in the Modeling and Simulation field for 20 years and I started this blog to share my experience and how general solutions were developed to tackle specific and more general problems. I will leave with one of the dose exposure figures (using dummy data) that I developed for an FDA submission. Throuhg out the years these visuals has evolved and are now part of my ggquickeda package.</p>
+<p><img src="erplot.jpg" class="img-fluid"></p>
+<p>This visual include several components:</p>
+<ul>
+<li><p>distribution of exposures (AUC) by dose level</p></li>
+<li><p>for each distribution we show the percentage of it falling within a specific quantile of AUC</p></li>
+<li><p>in the middle we have a table detailing for Placebo and each Quartile: <strong>AUC bins</strong>, <strong>Total N</strong> of patients, N of <strong>Responders</strong>, and the observed <strong>Percentage</strong> of response</p></li>
+<li><p>in the upper panel a logistic fit and its 95%CI of the probability of clinical response versus AUC is shown.</p></li>
+<li><p>The predicted response by dose level at the 10th, 25th, median,75th and 90th of exposure is shown and projected on the logistic curve</p></li>
+<li><p>The predicted response is also projected on Y axis for head to head comparison across doses and to appreciate the saturation at the highest dose levels/exposures</p></li>
+</ul>
 
 
 
