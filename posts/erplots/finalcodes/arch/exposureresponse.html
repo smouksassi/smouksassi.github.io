@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Samer Mouksassi">
-<meta name="dcterms.date" content="2025-08-15">
 
-<title>Welcome to Samer’s Blog – smouksassi.github.io</title>
+<title>exposureresponse – smouksassi.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,23 +23,23 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../../">
-<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../../site_libs/quarto-html/popper.min.js"></script>
-<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../../">
+<script src="../../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -70,8 +68,37 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../../styles.css">
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../../../styles.css">
 </head>
 
 <body class="nav-fixed fullcontent quarto-light">
@@ -81,7 +108,7 @@ ul.task-list li input[type="checkbox"] {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
-    <a class="navbar-brand" href="../../index.html">
+    <a class="navbar-brand" href="../../../../index.html">
     <span class="navbar-title">smouksassi.github.io</span>
     </a>
   </div>
@@ -92,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../../about.html"> 
+    <a class="nav-link" href="../../../../about.html"> 
 <span class="menu-text">Samer Mouksassi<br>Bio</span></a>
   </li>  
   <li class="nav-item compact">
@@ -113,38 +140,7 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
-    <div class="quarto-title column-body">
-      <h1 class="title">Welcome to Samer’s Blog</h1>
-                                <div class="quarto-categories">
-                <div class="quarto-category">news</div>
-              </div>
-                  </div>
-  </div>
-    
-  
-  <div class="quarto-title-meta">
-
-      <div>
-      <div class="quarto-title-meta-heading">Author</div>
-      <div class="quarto-title-meta-contents">
-               <p>Samer Mouksassi </p>
-            </div>
-    </div>
-      
-      <div>
-      <div class="quarto-title-meta-heading">Published</div>
-      <div class="quarto-title-meta-contents">
-        <p class="date">August 15, 2025</p>
-      </div>
-    </div>
-    
-      
-    </div>
-    
-  
-  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<header id="title-block-header" class="quarto-title-block"></header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     
@@ -154,21 +150,37 @@ ul.task-list li input[type="checkbox"] {
 
 
 
+<p>require(tidyr) require(dplyr) require(ggplot2) require(ggridges)</p>
+<p>source(“eqcut.r”) effICGI&lt;- read.csv(“ICGI.csv”)</p>
+<p>effICGI &lt;- effICGI %&gt;% filter(!is.na(ICGI))%&gt;% filter(!is.na(AUC)) effICGI<span class="math inline">\(XDL1C&lt;- factor(effICGI\)</span>XDL1)</p>
+<pre><code>effICGI$AUC.eqcut &lt;- eqcut(effICGI$AUC,ngroups=4,withhold=list(placebo=(effICGI$AUC==0)) )
+effICGI$AUC.int &lt;- Hmisc::cut2(effICGI$AUC,g=4) 
+effICGI$AUC.intmean &lt;- Hmisc::cut2(effICGI$AUC,g=4,levels.mean = TRUE)                          </code></pre>
+<p>observedprobsbuaucbin &lt;- effICGI %&gt;% group_by(AUC.int,AUC.intmean)%&gt;% summarize(N=sum(ICGI,na.rm=TRUE), Nmiss= length(AUC.int[is.na(AUC.int)]), Ntot=n(), prob=N/Ntot, SE= sqrt(prob*(1-prob)/Ntot ))</p>
+<p>effICGI2&lt;- effICGI[effICGI<span class="math inline">\(AUC&gt;0,]
+  effICGI2\)</span>XDL1C &lt;- “(all)” ggridgedata &lt;- rbind(effICGI,effICGI2) rm(effICGI2) ggridgedata<span class="math inline">\(ypointsdose &lt;-
+      ifelse(ggridgedata\)</span>XDL1==“0” ,-0.3, ifelse(ggridgedata<span class="math inline">\(XDL1=="600",-0.45,
+      ifelse(ggridgedata\)</span>XDL1==“1200”,-0.6, ifelse(ggridgedata<span class="math inline">\(XDL1=="1800",-0.75,
+      ifelse(ggridgedata\)</span>XDL1==“2400”,-0.9,-1.05)))))</p>
+<p>effICGIaucstatsbydose&lt;- ggridgedata %&gt;% group_by(XDL1C)%&gt;% summarize(minauc=min(AUC), maxauc=max(AUC), medauc=median(AUC), twentyfifth=quantile(AUC,0.25), seventyfifth=quantile(AUC,0.75), N=sum(ICGI,na.rm=TRUE), Nmiss= length(AUC.int[is.na(AUC.int)]), Ntot=n(), prob=N/Ntot, SE= sqrt(prob*(1-prob)/Ntot ))</p>
+<p>effICGIaucstatsbydose[effICGIaucstatsbydose$XDL1C==“(all)”,2:11] &lt;- NA</p>
+<p>ggridgedata<span class="math inline">\(AUC&lt;- ifelse(ggridgedata\)</span>XDL1C==“0”,NA, ggridgedata$AUC )</p>
+<p>ggridgedata<span class="math inline">\(XDL1C &lt;- factor(ggridgedata\)</span>XDL1C , levels=c(“0”, “600”, “1200”,“1800”,“2400”,“(all)”), labels=c(“Placebo”, “600 mg”, “1200 mg”,“1800 mg”,“2400 mg”,“(all)”)) effICGIaucstatsbydose<span class="math inline">\(XDL1C &lt;- factor(effICGIaucstatsbydose\)</span>XDL1C , levels=c(“0”, “600”, “1200”,“1800”,“2400”,“(all)”), labels=c(“Placebo”, “600 mg”, “1200 mg”,“1800 mg”,“2400 mg”,“(all)”))</p>
+<p>densityplot&lt;- ggplot(ggridgedata, aes(AUC,XDL1C, colour=XDL1C,fill=XDL1C ) )+ geom_vline(xintercept=c(9.74,53.37,99.31,343),linetype=2)+ geom_point(alpha=0.2,colour=“gray”)+ geom_errorbarh(data=effICGIaucstatsbydose, aes(x=medauc,xmax = twentyfifth, xmin = seventyfifth, height = 0.9))+ geom_point(data=effICGIaucstatsbydose, aes(x=medauc) )+ geom_density_ridges2(rel_min_height = 0.005,alpha=0.1,scale = 0.9)+ geom_density_ridges2(aes(y=“(all)”),rel_min_height = 0.005,alpha=0.1,scale = 20)+ labs(x=“AUC µg*h/mL”,y=“AUC Distributions”, colour=“Dose (mg)”,fill=“Dose (mg)”)+ scale_x_continuous(breaks=seq(0,400,25))+ theme_bw()+ theme(legend.position=“bottom”)+ coord_cartesian(xlim=c(-10,375))+ guides(col = guide_legend(nrow =1), fill = guide_legend(nrow =1))</p>
+<p>LOGMODEL&lt;- glm(formula = ICGI~ AUC, family = binomial(link = logit), data = effICGI, na.action = na.exclude, control = list(epsilon = 0.0001, maxit = 50, trace = F)) R1&lt;- vcov(LOGMODEL) coef(LOGMODEL)</p>
+<p>AUC.values &lt;- seq(0,350,1) logitId &lt;- coef(LOGMODEL)[1] + coef(LOGMODEL)[2]*AUC.values pd &lt;- exp(logitId)/(1 + exp(logitId))</p>
+<p>predictions&lt;- data.frame(AUC=AUC.values,pred=pd) rm(pd,logitId,AUC.values)</p>
+<p>tableplot&lt;- ggplot(observedprobsbuaucbin, aes( x=as.double(as.character(AUC.intmean))) )+ geom_vline(xintercept=c(9.74,53.37,99.31,343),linetype=2)+ geom_text(y=0.25,aes(label=paste(AUC.int,“”,Ntot,“”,N, “”,100*round(prob,2),“%” ,sep=““)))+ geom_text(x=250,y=0.25, label=paste(”AUC bins”,“”,“Total N”, “”, “Responders”,“”,“Percentage”,sep=“” ))+ scale_x_continuous(breaks=seq(0,400,25))+ coord_cartesian(xlim=c(-10,375),ylim=c(0.2,0.3))+ theme_bw()+ theme(axis.line.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank() )</p>
+<p>logistplot&lt;- ggplot(effICGI, aes(AUC,ICGI) )+ #geom_point()+ geom_vline(xintercept=c(9.74,53.37,99.31,343),linetype=2)+ geom_hline(yintercept=c(0,1))+ geom_smooth(method=“glm”,method.args = list(family = “binomial”),color=“black”,fill=“gray”)+ geom_errorbar(data=observedprobs,aes( x=as.double(as.character(AUC.intmean)), y=prob,ymin=prob+SE,ymax=prob-SE),width=5 )+ geom_point(data=observedprobsbuaucbin,aes( x=as.double(as.character(AUC.intmean)), y=prob),size=1.5)+<br>
+geom_point(data=effICGIaucstatsbydose,aes(medauc,y=prob,col=factor(XDL1C)), size=4,alpha=0.5,show.legend=FALSE )+<br>
+labs(x=“AUC µg*h/mL”,y=“Pr(Response)”)+ scale_x_continuous(breaks=seq(0,400,25))+ scale_y_continuous(breaks=c(0,0.25,0.50,0.75,1.0))+ coord_cartesian(xlim=c(-10,375))+ theme_bw()+ theme(axis.line.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank(), axis.title.x=element_blank(), axis.title.y = element_text( margin = unit(c(0, 8, 0, 0), “mm”), angle = 90) )</p>
+<p>egg::ggarrange( logistplot,tableplot,densityplot,heights=c(1,0.5,1) )</p>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+<p>dosepredictionssegements &lt;- dosepredictions %&gt;% group_by(DOSE) %&gt;% dplyr::summarize( minpred=min(value,na.rm = TRUE), maxpred=max(value,na.rm = TRUE), xmin=-5,xmax=-5) dosepredictionssegementsx &lt;- dosepredictions %&gt;% group_by(DOSE) %&gt;% dplyr::summarize( minx = min(AUC,na.rm = TRUE), maxx = max(AUC,na.rm = TRUE), ymin=0,ymax=0)</p>
 
-<p>Welcome!</p>
-<p>This is the first post in my personal blog. I have been working in the Modeling and Simulation field for 20 years and I started this blog to share my experience and how general solutions were developed to tackle specific and more general problems. I will keep this first post short and leave you with one of the dose exposure figures (using dummy data) that I developed for an FDA submission 15 years ago. Through out the years these visuals has evolved and are now part of my <a href="https://smouksassi.github.io/ggquickeda/" title="ggquickeda is an R Shiny app/package providing a graphical user interface (GUI) to ggplot2 and table1">ggquickeda</a> package that will be covered in future posts.</p>
-<p><img src="erplot.jpg" class="img-fluid"></p>
-<p>This visual include several components:</p>
-<ul>
-<li><p>distribution of exposures (AUC) by dose level</p></li>
-<li><p>for each distribution we show the percentage of it falling within a specific quantile of AUC</p></li>
-<li><p>in the middle we have a table detailing for Placebo and each Quartile: <strong>AUC bins</strong>, <strong>Total N</strong> of patients, N of <strong>Responders</strong>, and the observed <strong>Percentage</strong> of response</p></li>
-<li><p>in the upper panel a logistic fit and its 95%CI of the probability of clinical response versus AUC is shown.</p></li>
-<li><p>The predicted response by dose level at the 10th, 25th, median,75th and 90th of exposure is shown and projected on the logistic curve</p></li>
-<li><p>The predicted response is also projected on Y axis for head to head comparison across doses and to appreciate the saturation at the highest dose levels/exposures</p></li>
-</ul>
 
-
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -243,7 +255,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/smouksassi\.github\.io\/\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
