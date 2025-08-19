@@ -9,7 +9,7 @@ format:
   code-fold: true
 ---
 
-In this post I will provide the code and thinking process behind the figure shared in the last blog post. We will start with a simpler version where we show the Endpoint versus exposures, which in this case are areas under the drug concentrations curves (AUC) on top. And at the bottom, the individual AUCs by dose level with a different symbol by responder status: responder (as triangles) and not responder (as circles).
+In this post I will provide the code and thinking process behind the figure shared in my first [blog post](https://smouksassi.github.io/posts/welcome/ "Welcome to Samer’s Blog"). We will start with a simpler version where we show the Endpoint versus exposures, which in this case are areas under the drug concentrations curves (AUC) on top. And at the bottom, the individual AUCs by dose level with a different symbol by responder status: responder (as triangles) and not responder (as circles).
 
 ```{r}
 #| message: false
@@ -117,6 +117,7 @@ exposurelimits <- ICGIlong %>%
               quant =    c(0,0.25, 0.5, 0.75, 1))
 
 ```
+
 We prepare the distributions plot beneath the probability of response curve by using ggridges, constructing a numrical value for where to plot the distributions and by excluding the Placebo from the distributions plot. The distributions are shown as densities scaled to 1 with quantiles lines at 10th, 25th 50th, 75th and 90th percentiles.
 
 ```{r}
@@ -161,7 +162,9 @@ p1 <- ggplot(ICGIlong, aes(expvalue,response) )+
          color = guide_legend(order = 2, nrow=2, reverse = TRUE))
 
 ```
+
 Next we compute the probabilities of response by exposures quartiles and by dose levels and add it to the plot using `geom_pointrange`
+
 ```{r}
 #| message: false
 #| warning: false
@@ -231,7 +234,8 @@ p2 <- p1 +
   guides(shape = guide_legend(order=3,nrow=2,reverse = TRUE))
 
 ```
-Finally we want to annotate the plot by displaying for each exptile the bin limits, the total N of subjects, the N of responders the probability of response. 
+
+Finally we want to annotate the plot by displaying for each exptile the bin limits, the total N of subjects, the N of responders the probability of response.
 
 ```{r}
 #| message: false
@@ -270,6 +274,7 @@ labs(x="Exposure Values",
      y="Probability of Endpoint")
 
 ```
+
 In the `ggquickeda` package the `ggresponseexpdist` function automate a lot of these operations to be able to generate these advanced plots using concise syntax.
 
 ```{r}
