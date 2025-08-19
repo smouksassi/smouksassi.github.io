@@ -1,12 +1,14 @@
 ---
-title: "Welcome To Samer's Blog"
+title: "Welcome to Samer's Blog"
 author: "Samer Mouksassi"
 date: "2025-08-15"
 categories: [news]
-image: thumbnail.jpg
+image: erplot.jpg
 ---
 
-This is the first post in my personal blog. Welcome! I have been working in the Modeling and Simulation field for 20 years and I started this blog to share my experience and how general solutions were developed to tackle specific and more general problems. I will leave with one of the dose exposure figures (using dummy data) that I developed for an FDA submission. Throuhg out the years these visuals has evolved and are now part of my ggquickeda package.
+Welcome!
+
+This is the first post in my personal blog. I have been working in the Modeling and Simulation field for 20 years and I started this blog to share my experience and how general solutions were developed to tackle specific and more general problems. I will keep this first post short and leave you with one of the dose exposure figures (using dummy data) that I developed for an FDA submission 15 years ago. Through out the years these visuals has evolved and are now part of my [ggquickeda](https://smouksassi.github.io/ggquickeda/ "ggquickeda is an R Shiny app/package providing a graphical user interface (GUI) to ggplot2 and table1") package that will be covered in future posts.
 
 ![](erplot.jpg)
 

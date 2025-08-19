@@ -1,5 +1,5 @@
 ---
-title: "Samer Mouksassi"
+title: "Samer Mouksassi<br>Bio"
 image: images/profile.jpg 
 about:
   template: jolla
