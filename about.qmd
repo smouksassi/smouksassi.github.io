@@ -1,10 +1,12 @@
 ---
 title: "Samer Mouksassi<br>Bio & Contact"
-image: images/profile.jpg 
+image: images/profile.jpg
+html:
+  page-layout: full
 about:
-  template: broadside
-  image-width: 2cm
-  image-shape: round
+  template: solana
+  image-width: 10em
+  image-shape: rectangle
   links:
     - icon: twitter
       text: Twitter
@@ -20,19 +22,14 @@ about:
       href: mailto:samermouksassi@gmail.com
 ---
 
-Hi, I have been working in the **Model-Informed** **Drug Development** field for more than **20 years**. I have done projects for small startups, small, mid and large Pharmaceutical companies as well as **Global Health** key players like the Gates Foundation. My core services are focused on **pharmacometrics** analyses to support your **drug development programs**. I have experience in putting together the totality of evidence using all data sources including **real world data**.
-
-If you would like us to discuss, feel free to send me an [email](mailto:samermouksassi@gmail.com "Samer's email").
+Hi, I have been working in the **Model-Informed** **Drug Development** field for more than **20 years**. I have done projects for small start-ups, small, mid and large **Pharmaceutical** companies as well as **Global Health** key players like the **Gates Foundation**. My core services are focused on **pharmacometrics** analyses to support your **drug development programs**. I have contributed to 100+ projects, serving 40+ different clients ranging from pre-clinical, translational qsp and **regulatory Population PK/PD filings** using the totality of data including large **phase III registration** trials as well as **real world data**. Under my belt, I have contributed to 10+ regulatory approvals for **FDA**, **EMA**, **PMDA**, **China** and **Health Canada** across various therapeutic areas namely in **rare diseases** and **pediatrics**. Feel free to send me an [email](mailto:samermouksassi@gmail.com "Samer's email") to start our discussion on how to start collaborating.
 
 ::: panel-tabset
-## Bio
+## Teaching
 
-My current and previous roles involved leading, mentoring and building pharmacometrics teams across the globe first with Pharsight in Montreal Canada and later with Certara in Cairo (Egypt) and Cape Town (South Africa). During the last 20 years, together with my teams, I have contributed to many **FDA**, **EMA**, **PMDA**, **China** and **Health Canada** **approvals** across various therapeutic areas namely in rare diseases in adults and **pediatric** populations. I have a passion for **teaching** and for **building tools** that empower non-coders to communicate efficiently. Some of my **R packages** include (`coveffectsplot`, `ggquickeda` and `tidyvpc`).
+My current and previous roles involved leading, mentoring and building pharmacometrics teams across the globe first with Pharsight in Montreal Canada and later with Certara in Cairo (Egypt) and Cape Town (South Africa). I have a passion for **teaching** and for **building tools** that empower non-coders to **communicate** efficiently. Some of my **R packages** include (`coveffectsplot`, `ggquickeda` and `tidyvpc`).
 
 ## Experience
-
-**Independent Consultant** \| Drug Development\
-Samer Mouksassi Solutions, San Francisco \| 2025 - Present
 
 **Full Professional Researcher** \| Savic Lab\
 UCSF, San Francisco \| 2025 - Present
@@ -65,25 +62,27 @@ Lebanese University \| Beirut, Lebanon\
 
 ## Selected Publications
 
-1.  Pharmacometric Analysis to Describe Pharmacokinetics and **Exposure-Efficacy Response** of Ivermectin in Adolescents Infected with Trichuris trichiura. Ajayi DT, Orherhe OM, Pillai GC, Mouksassi S, Steffens B, Bräm D, Sprecher V, Hofmann D, Buettcher M, Coulibaly JT, Ali SM, Keiser J, Pfister M. P. J Clin Pharmacol. 2024 Nov 6. doi: 10.1002/jcph.6158.
+1.  **Pharmacokinetic and pharmacodynamic modelling** of continuous erythropoiesis receptor activator in children: A comprehensive analysis and **real-world data** validation. Samer Mouksassi, Franz Schaefer, Bradley A. Warady, Claus P. Schmitt, Sylvie Meyer Reigner, Milena Studer, Pascal Chanu, Nicolas Frey. Br J Clin Pharmacol. 2025;1–12. doi:10.1002/bcp.70165
 
-2.  Postmarketing Assessment of **Antibody-Drug Conjugates**: Proof-of-Concept Using **Model-Based Meta-Analysis** and a **Clinical Utility Index** Approach. Asiimwe IG, Chtiba N, Mouksassi S, Pillai GC, Peter RM, Yuen E, Pilla Reddy V. CPT Pharmacometrics Syst Pharmacol. 2025 Mar 4. doi: 10.1002/psp4.70013.
+2.  Pharmacometric Analysis to Describe Pharmacokinetics and **Exposure-Efficacy Response** of Ivermectin in Adolescents Infected with Trichuris trichiura. Ajayi DT, Orherhe OM, Pillai GC, Mouksassi S, Steffens B, Bräm D, Sprecher V, Hofmann D, Buettcher M, Coulibaly JT, Ali SM, Keiser J, Pfister M. P. J Clin Pharmacol. 2024 Nov 6. doi: 10.1002/jcph.6158.
 
-3.  Advancing **pharmacometrics in Africa**-Transition from capacity development toward job creation. Pillai GC, Mouksassi S, Asiimwe IG, Rayner CR, Kern S, Sinxadi P, Denti P, Decloedt E, Waitt C, Ogutu BR, de Greef R. CPT Pharmacometrics Syst Pharmacol. 2025 Mar;14(3):407-419.
+3.  Postmarketing Assessment of **Antibody-Drug Conjugates**: Proof-of-Concept Using **Model-Based Meta-Analysis** and a **Clinical Utility Index** Approach. Asiimwe IG, Chtiba N, Mouksassi S, Pillai GC, Peter RM, Yuen E, Pilla Reddy V. CPT Pharmacometrics Syst Pharmacol. 2025 Mar 4. doi: 10.1002/psp4.70013.
 
-4.  Quantifying **natural amyloid plaque accumulation** in the continuum of Alzheimer's disease using ADNI. Elhefnawy ME, Patson N, Mouksassi S, Pillai G, Shcherbinin S, Chigutsa E, Gueorguieva I. J Pharmacokinet Pharmacodyn. 2025 Jan 25;52(1):15.
+4.  Advancing **pharmacometrics in Africa**-Transition from capacity development toward job creation. Pillai GC, Mouksassi S, Asiimwe IG, Rayner CR, Kern S, Sinxadi P, Denti P, Decloedt E, Waitt C, Ogutu BR, de Greef R. CPT Pharmacometrics Syst Pharmacol. 2025 Mar;14(3):407-419.
 
-5.  **EEDBI** Consortium.Anthropometry relationship with duodenal histologic features of children with environmental enteric dysfunction: a multicenter cross-sectional study. Jamil Z, VanBuskirk K, Mweetwa M, Mouksassi S, Smith G, Ahmed T, Chandwe K, Denno DM, Fahim SM, Kelly P, Mahfuz M, Mallawaarachchi I, Marie C, Moore SR, Petri WA Jr, Ali SA. Am J Clin Nutr. 2024 Sep;120 Suppl 1:S65-S72.
+5.  Quantifying **natural amyloid plaque accumulation** in the continuum of Alzheimer's disease using ADNI. Elhefnawy ME, Patson N, Mouksassi S, Pillai G, Shcherbinin S, Chigutsa E, Gueorguieva I. J Pharmacokinet Pharmacodyn. 2025 Jan 25;52(1):15.
 
-6.  Multiplexed immunohistochemical evaluation of **small bowel inflammatory** and epithelial parameters in environmental enteric dysfunction. VanBuskirk K, Mweetwa M, Kolterman T, Raghavan S, Ahmed T, Ali SA, Begum SKN, Besa E, Denno DM, Jamil Z,/\> Kelly P, Mahfuz M, Moore SR, Mouksassi S, Petri WA Jr, Tarr PI, Sullivan PB, Moskaluk CA; EEDBI Consortium. . Am J Clin Nutr. 2024 Sep;120 Suppl 1:S31-S40.
+6.  **EEDBI** Consortium.Anthropometry relationship with duodenal histologic features of children with environmental enteric dysfunction: a multicenter cross-sectional study. Jamil Z, VanBuskirk K, Mweetwa M, Mouksassi S, Smith G, Ahmed T, Chandwe K, Denno DM, Fahim SM, Kelly P, Mahfuz M, Mallawaarachchi I, Marie C, Moore SR, Petri WA Jr, Ali SA. Am J Clin Nutr. 2024 Sep;120 Suppl 1:S65-S72.
 
-7.  Histopathology underlying **environmental enteric dysfunction** in a cohort study of undernourished children in Bangladesh, Pakistan, and Zambia compared with United States children. Kelly P, VanBuskirk K, Coomes D, Mouksassi S, Smith G, Jamil Z, Hossain MS, Syed S, Marie C, Tarr PI, Sullivan PB, Petri WA Jr, Denno DM, Ahmed T, Mahfuz M, Ali SA, Moore SR, Ndao IM, Tearney GJ, Ömer H Yilmaz, Raghavan SS, Moskaluk CA, Liu TC; EEDBI Consortium. Am J Clin Nutr. 2024 Sep;120 Suppl 1:S15-S30.
+7.  Multiplexed immunohistochemical evaluation of **small bowel inflammatory** and epithelial parameters in environmental enteric dysfunction. VanBuskirk K, Mweetwa M, Kolterman T, Raghavan S, Ahmed T, Ali SA, Begum SKN, Besa E, Denno DM, Jamil Z,/\> Kelly P, Mahfuz M, Moore SR, Mouksassi S, Petri WA Jr, Tarr PI, Sullivan PB, Moskaluk CA; EEDBI Consortium. . Am J Clin Nutr. 2024 Sep;120 Suppl 1:S31-S40.
 
-8.  Understanding **Drug Exposure and Trichuris trichiura Cure rates:** A Pharmacometric Approach for Albendazole‑Ivermectin Co‑medication in Tanzania and Côte d’Ivoire. Pillay‑Fuentes Lorente V, Nwogu‑Attah J, Steffens B, Bräm D, Sprecher V, Hofmann D, Buettcher M, Pillai G, Mouksassi S, Coulibaly J, Pfister M, Keiser J Drugs R D. 2024 Jun;24(2):331-340./\>
+8.  Histopathology underlying **environmental enteric dysfunction** in a cohort study of undernourished children in Bangladesh, Pakistan, and Zambia compared with United States children. Kelly P, VanBuskirk K, Coomes D, Mouksassi S, Smith G, Jamil Z, Hossain MS, Syed S, Marie C, Tarr PI, Sullivan PB, Petri WA Jr, Denno DM, Ahmed T, Mahfuz M, Ali SA, Moore SR, Ndao IM, Tearney GJ, Ömer H Yilmaz, Raghavan SS, Moskaluk CA, Liu TC; EEDBI Consortium. Am J Clin Nutr. 2024 Sep;120 Suppl 1:S15-S30.
 
-9.  **Machine-Learning Assisted Screening of Correlated Covariates**: Application to Clinical Data of Desipramine./\> Asiimwe IG, S'fiso Ndzamba B, Mouksassi S, Pillai GC, Lombard A, Lang J. AAPS J. 2024 May 30;26(4):63.
+9.  Understanding **Drug Exposure and Trichuris trichiura Cure rates:** A Pharmacometric Approach for Albendazole‑Ivermectin Co‑medication in Tanzania and Côte d’Ivoire. Pillay‑Fuentes Lorente V, Nwogu‑Attah J, Steffens B, Bräm D, Sprecher V, Hofmann D, Buettcher M, Pillai G, Mouksassi S, Coulibaly J, Pfister M, Keiser J Drugs R D. 2024 Jun;24(2):331-340./\>
 
-10. **Totality of evidence** of the effectiveness of **repurposed therapies** for COVID-19: Can we use real-world studies alongside randomized controlled trials? Mandema J, Montgomery H, Dron L, Fu S, Russek-Cohen E, Bromley C, Mouksassi S, Lalonde A, Springford A, Tsai L, Ambery P, McNair D, Qizilbash N, Pocock S, Zariffa N. Clin Transl Sci. 2023 Oct;16(10):1842-1855.
+10. **Machine-Learning Assisted Screening of Correlated Covariates**: Application to Clinical Data of Desipramine./\> Asiimwe IG, S'fiso Ndzamba B, Mouksassi S, Pillai GC, Lombard A, Lang J. AAPS J. 2024 May 30;26(4):63.
+
+11. **Totality of evidence** of the effectiveness of **repurposed therapies** for COVID-19: Can we use real-world studies alongside randomized controlled trials? Mandema J, Montgomery H, Dron L, Fu S, Russek-Cohen E, Bromley C, Mouksassi S, Lalonde A, Springford A, Tsai L, Ambery P, McNair D, Qizilbash N, Pocock S, Zariffa N. Clin Transl Sci. 2023 Oct;16(10):1842-1855.
 :::
 
-When not, analyzing data, building exciting data displays and innovating with new trial designs, I enjoy spending time in nature.
+When not, analyzing data, building exciting data displays and innovating with new trial designs, I enjoy spending time in nature, working out and reading.
