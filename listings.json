@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/KMplots/index.html",
       "/posts/erplots/index.html",
       "/posts/welcome/index.html"
     ]
