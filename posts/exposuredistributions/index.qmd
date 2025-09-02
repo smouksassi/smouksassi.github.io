@@ -92,7 +92,7 @@ ggplot(ICGI %>%
 
 ```
 
-Next, I use `ggridges` where we put each dose at the y axis, I also add a "pooled" distribution across all doses (without Placebo). We also show the quartiles lines (25%, 50% and 75%) for each dose level and pooled. All values for Placebo are naturally zero and as such we omit the distribution for Placebo. The computed quartiles (which we computed earlier) matches those automatically computed by `ggridges`.
+Next, I use `ggridges` where we put each dose at the y axis and add a "pooled" distribution across all doses (without Placebo). Then I also show the quartiles lines (25%, 50% and 75%) for each dose level and pooled. All values for Placebo are naturally zero and as such I omit the distribution for Placebo. The computed quartiles (which were computed earlier) matches those automatically computed by `ggridges`.
 
 ```{r,dev='ragg_png'}
 #| message: false
@@ -124,7 +124,7 @@ ggplot(rbind(ICGI %>%
 
 ```
 
-What we want to reason about is how many patients would achieve exposures within quartiles limits at a given dose level ? This would tell us about the probability of achieving exposures below the first quartile (Q1), between Q1 and Q2, between Q2 and Q3 and \>=Q4. We compute the quantities of interest using `table1` as well as using simple counting by Dose and quartile category.
+What we want to reason about is how many patients would achieve exposures within quartiles limits at a given dose level ? This would tell us about the probability of achieving exposures below the first quartile (Q1), between Q1 and Q2, between Q2 and Q3 and ≥ Q4. We compute the quantities of interest using `table1` as well as using simple counting by Dose and quartile category.
 
 ```{r,dev='ragg_png'}
 #| message: false
@@ -148,12 +148,40 @@ percentineachbreakcategory <- ICGI %>%
 ```
 
 We then add this information to the ggridges plot using
-`geom_density_ridges_gradient` to color by quartile and using `geom_text` to add the percentages.
+`geom_density_ridges_gradient` to color by quartile and using `geom_text` to add the percentages. We also show how to do it using `geom_density` and `facet_grid`.
 
 ```{r,dev='ragg_png'}
 #| message: false
 #| warning: false
 #| paged-print: true
+
+ggplot(ICGI %>% filter(AUC>0),
+       aes(x = AUC, y = DOSE)) +
+  geom_density_ridges_gradient(aes(fill = after_stat(
+    case_when(x <= q25 ~ "Q1",
+              x > q25 & x <= q50 ~ "Q2",
+              x > q50 & x <= q75 ~ "Q3",
+              x > q75 ~ "Q4"))),
+    rel_min_height = 0.01,
+    quantile_lines = TRUE,
+    jittered_points = TRUE, alpha = 0.2, scale = 0.9)+
+  geom_vline(xintercept = AUCquantiles)+
+  geom_text_repel(data=percentineachbreakcategory %>% 
+                    filter(DOSE!="Placebo"),
+                  aes(label=paste0("N =",Ncat,"\n",round(100*percentage,0),"%"),
+                      x=xmean, y =DOSE,size=4,
+                      color = AUC_Q ),vjust=1.2,
+            direction="x",show.legend = FALSE)+
+  guides(fill = guide_legend(reverse = TRUE))+
+  scale_x_continuous(breaks= seq(0,400,50))+
+  theme_bw()+
+  labs(x="AUC (µg*h/mL)",fill ="")+
+  scale_fill_manual(values=c("#4682AC70", "#FDBB2F70", "#EE312470",
+                             "#33634370", "#7059a670", "#80333370"))+
+  scale_color_manual(values=c("#4682AC90", "#FDBB2F90", "#EE312490",
+                             "#33634390", "#7059a690", "#80333390"))
+
+
 
 ggplot(ICGI %>% 
          filter(DOSE!="Placebo"))+
@@ -165,7 +193,7 @@ ggplot(ICGI %>%
                      case_when(x <= q25 ~ "Q1",
                                x > q25 & x <= q50 ~ "Q2",
                                x > q50 & x <= q75 ~ "Q3",
-                               x > q75 ~ "Q4"))),alpha=0.5)+
+                               x > q75 ~ "Q4"))),alpha=0.3)+
   geom_text_repel(data=percentineachbreakcategory %>% 
                     filter(DOSE!="Placebo"),
                   aes(label=paste0("N =",Ncat,"\n",round(100*percentage,0),"%"),
@@ -201,6 +229,9 @@ The plot above show us the N of patients and percentages by quartile at each dos
 #| message: false
 #| warning: false
 #| paged-print: true
+#| fig-height: 7
+#| fig-width: 9
+
 ICGIERDATA <- ICGI
 ICGIERDATA$Endpoint <- "ICGI"
 ICGIERDATA$response <- ICGIERDATA$ICGI 
