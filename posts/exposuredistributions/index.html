@@ -284,7 +284,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>Next, I use <code>ggridges</code> where we put each dose at the y axis, I also add a “pooled” distribution across all doses (without Placebo). We also show the quartiles lines (25%, 50% and 75%) for each dose level and pooled. All values for Placebo are naturally zero and as such we omit the distribution for Placebo. The computed quartiles (which we computed earlier) matches those automatically computed by <code>ggridges</code>.</p>
+<p>Next, I use <code>ggridges</code> where we put each dose at the y axis and add a “pooled” distribution across all doses (without Placebo). Then I also show the quartiles lines (25%, 50% and 75%) for each dose level and pooled. All values for Placebo are naturally zero and as such I omit the distribution for Placebo. The computed quartiles (which were computed earlier) matches those automatically computed by <code>ggridges</code>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -316,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>What we want to reason about is how many patients would achieve exposures within quartiles limits at a given dose level ? This would tell us about the probability of achieving exposures below the first quartile (Q1), between Q1 and Q2, between Q2 and Q3 and &gt;=Q4. We compute the quantities of interest using <code>table1</code> as well as using simple counting by Dose and quartile category.</p>
+<p>What we want to reason about is how many patients would achieve exposures within quartiles limits at a given dose level ? This would tell us about the probability of achieving exposures below the first quartile (Q1), between Q1 and Q2, between Q2 and Q3 and ≥ Q4. We compute the quantities of interest using <code>table1</code> as well as using simple counting by Dose and quartile category.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -416,46 +416,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(DOSE,AUC_Q)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We then add this information to the ggridges plot using <code>geom_density_ridges_gradient</code> to color by quartile and using <code>geom_text</code> to add the percentages.</p>
+<p>We then add this information to the ggridges plot using <code>geom_density_ridges_gradient</code> to color by quartile and using <code>geom_text</code> to add the percentages. We also show how to do it using <code>geom_density</code> and <code>facet_grid</code>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ICGI <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>))<span class="sc">+</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(<span class="fu">aes</span>(<span class="at">x =</span> AUC,<span class="at">color =</span> AUC_Q ) ,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>,<span class="st">"cm"</span>))<span class="sc">+</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> AUC,</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group =</span> DOSE,</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span><span class="fu">after_stat</span>(scaled),</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="fu">after_stat</span>(</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">case_when</span>(x <span class="sc">&lt;=</span> q25 <span class="sc">~</span> <span class="st">"Q1"</span>,</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q25 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q50 <span class="sc">~</span> <span class="st">"Q2"</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q50 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q75 <span class="sc">~</span> <span class="st">"Q3"</span>,</span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q75 <span class="sc">~</span> <span class="st">"Q4"</span>))),<span class="at">alpha=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ICGI <span class="sc">%&gt;%</span> <span class="fu">filter</span>(AUC<span class="sc">&gt;</span><span class="dv">0</span>),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> AUC, <span class="at">y =</span> DOSE)) <span class="sc">+</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density_ridges_gradient</span>(<span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">after_stat</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">case_when</span>(x <span class="sc">&lt;=</span> q25 <span class="sc">~</span> <span class="st">"Q1"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>              x <span class="sc">&gt;</span> q25 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q50 <span class="sc">~</span> <span class="st">"Q2"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>              x <span class="sc">&gt;</span> q50 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q75 <span class="sc">~</span> <span class="st">"Q3"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>              x <span class="sc">&gt;</span> q75 <span class="sc">~</span> <span class="st">"Q4"</span>))),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">rel_min_height =</span> <span class="fl">0.01</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">quantile_lines =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">jittered_points =</span> <span class="cn">TRUE</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">scale =</span> <span class="fl">0.9</span>)<span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> AUCquantiles)<span class="sc">+</span></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data=</span>percentineachbreakcategory <span class="sc">%&gt;%</span> </span>
 <span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>),</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">label=</span><span class="fu">paste0</span>(<span class="st">"N ="</span>,Ncat,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,<span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span>percentage,<span class="dv">0</span>),<span class="st">"%"</span>),</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">x=</span>xmean, <span class="at">y =</span><span class="dv">0</span>,</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> AUC_Q ),<span class="at">direction=</span><span class="st">"y"</span>,</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">show.legend =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>percentineachbreakcategory <span class="sc">%&gt;%</span> </span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>              <span class="fu">distinct</span>(DOSE,Ntot),</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label=</span><span class="fu">paste0</span>(<span class="st">"N tot = "</span>,Ntot,<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>),</span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="dv">300</span>,<span class="at">y=</span><span class="dv">0</span>,</span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>            ))<span class="sc">+</span></span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(q25,q50,q75))<span class="sc">+</span></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Quartiles"</span>,<span class="at">color=</span><span class="st">"Quartiles"</span>)<span class="sc">+</span></span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(DOSE<span class="sc">~</span>.,<span class="at">as.table =</span> <span class="cn">FALSE</span>,<span class="at">switch=</span><span class="st">"y"</span>)<span class="sc">+</span></span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC"</span>, </span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"#FDBB2F"</span>, <span class="st">"#EE3124"</span>, <span class="st">"#336343"</span>, <span class="st">"#7059a6"</span>, <span class="st">"#803333"</span>))<span class="sc">+</span></span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC"</span>, </span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"#FDBB2F"</span>, <span class="st">"#EE3124"</span>, <span class="st">"#336343"</span>, <span class="st">"#7059a6"</span>, <span class="st">"#803333"</span>))<span class="sc">+</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#475c6b"</span>),</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.y.left =</span>   <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>,</span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">color =</span> <span class="st">"white"</span>,<span class="at">angle=</span><span class="dv">0</span>),</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.placement =</span> <span class="st">"outside"</span>, <span class="at">axis.title.y.left =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">x=</span>xmean, <span class="at">y =</span>DOSE,<span class="at">size=</span><span class="dv">4</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> AUC_Q ),<span class="at">vjust=</span><span class="fl">1.2</span>,</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">direction=</span><span class="st">"x"</span>,<span class="at">show.legend =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">fill =</span> <span class="fu">guide_legend</span>(<span class="at">reverse =</span> <span class="cn">TRUE</span>))<span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">400</span>,<span class="dv">50</span>))<span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"AUC (µg*h/mL)"</span>,<span class="at">fill =</span><span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC70"</span>, <span class="st">"#FDBB2F70"</span>, <span class="st">"#EE312470"</span>,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"#33634370"</span>, <span class="st">"#7059a670"</span>, <span class="st">"#80333370"</span>))<span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC90"</span>, <span class="st">"#FDBB2F90"</span>, <span class="st">"#EE312490"</span>,</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"#33634390"</span>, <span class="st">"#7059a690"</span>, <span class="st">"#80333390"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -464,31 +453,77 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </div>
-</div>
-<p>The plot above show us the N of patients and percentages by quartile at each dose level. At the 1800 mg dose, 81 % of patients were at the highest quartile versus 89% at the 2400 mg. We can appreciate that there is some saturation going on. For reference I will show again a plot done using <code>ggresponseexpdist</code></p>
-<div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ICGIERDATA <span class="ot">&lt;-</span> ICGI</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>ICGIERDATA<span class="sc">$</span>Endpoint <span class="ot">&lt;-</span> <span class="st">"ICGI"</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>ICGIERDATA<span class="sc">$</span>response <span class="ot">&lt;-</span> ICGIERDATA<span class="sc">$</span>ICGI </span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggresponseexpdist</span>(<span class="at">data =</span> ICGIERDATA,</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="at">model_type =</span> <span class="st">"logistic"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_metrics =</span> <span class="fu">c</span>(<span class="st">"AUC"</span>),</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_metric_split =</span> <span class="st">"quartile"</span>,</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="at">N_byexptile_ypos =</span> <span class="st">"with means"</span>,</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose_plac =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="at">N_bydose_ypos =</span> <span class="st">"none"</span>,</span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose_text_size =</span> <span class="dv">0</span>,</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="at">N_text_size =</span> <span class="dv">3</span>,</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_distribution_percent =</span> <span class="st">"%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(ICGI <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>))<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_rug</span>(<span class="fu">aes</span>(<span class="at">x =</span> AUC,<span class="at">color =</span> AUC_Q ) ,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.2</span>,<span class="st">"cm"</span>))<span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x =</span> AUC,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group =</span> DOSE,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span><span class="fu">after_stat</span>(scaled),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill =</span> <span class="fu">after_stat</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">case_when</span>(x <span class="sc">&lt;=</span> q25 <span class="sc">~</span> <span class="st">"Q1"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q25 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q50 <span class="sc">~</span> <span class="st">"Q2"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q50 <span class="sc">&amp;</span> x <span class="sc">&lt;=</span> q75 <span class="sc">~</span> <span class="st">"Q3"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>                               x <span class="sc">&gt;</span> q75 <span class="sc">~</span> <span class="st">"Q4"</span>))),<span class="at">alpha=</span><span class="fl">0.3</span>)<span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="at">data=</span>percentineachbreakcategory <span class="sc">%&gt;%</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>),</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">aes</span>(<span class="at">label=</span><span class="fu">paste0</span>(<span class="st">"N ="</span>,Ncat,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,<span class="fu">round</span>(<span class="dv">100</span><span class="sc">*</span>percentage,<span class="dv">0</span>),<span class="st">"%"</span>),</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>                      <span class="at">x=</span>xmean, <span class="at">y =</span><span class="dv">0</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>                      <span class="at">color =</span> AUC_Q ),<span class="at">direction=</span><span class="st">"y"</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>                  <span class="at">show.legend =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">data=</span>percentineachbreakcategory <span class="sc">%&gt;%</span> </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>              <span class="fu">filter</span>(DOSE<span class="sc">!=</span><span class="st">"Placebo"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>              <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>              <span class="fu">distinct</span>(DOSE,Ntot),</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">label=</span><span class="fu">paste0</span>(<span class="st">"N tot = "</span>,Ntot,<span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span>),</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>                <span class="at">x=</span><span class="dv">300</span>,<span class="at">y=</span><span class="dv">0</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            ))<span class="sc">+</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(q25,q50,q75))<span class="sc">+</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">fill=</span><span class="st">"Quartiles"</span>,<span class="at">color=</span><span class="st">"Quartiles"</span>)<span class="sc">+</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(DOSE<span class="sc">~</span>.,<span class="at">as.table =</span> <span class="cn">FALSE</span>,<span class="at">switch=</span><span class="st">"y"</span>)<span class="sc">+</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC"</span>, </span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>                             <span class="st">"#FDBB2F"</span>, <span class="st">"#EE3124"</span>, <span class="st">"#336343"</span>, <span class="st">"#7059a6"</span>, <span class="st">"#803333"</span>))<span class="sc">+</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"#4682AC"</span>, </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>                              <span class="st">"#FDBB2F"</span>, <span class="st">"#EE3124"</span>, <span class="st">"#336343"</span>, <span class="st">"#7059a6"</span>, <span class="st">"#803333"</span>))<span class="sc">+</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()<span class="sc">+</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">strip.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"#475c6b"</span>),</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.text.y.left =</span>   <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>                                           <span class="at">color =</span> <span class="st">"white"</span>,<span class="at">angle=</span><span class="dv">0</span>),</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">strip.placement =</span> <span class="st">"outside"</span>, <span class="at">axis.title.y.left =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The plot above show us the N of patients and percentages by quartile at each dose level. At the 1800 mg dose, 81 % of patients were at the highest quartile versus 89% at the 2400 mg. We can appreciate that there is some saturation going on. For reference I will show again a plot done using <code>ggresponseexpdist</code> which automates this process when user specify the <code>exposure_distribution_percent</code> option.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>ICGIERDATA <span class="ot">&lt;-</span> ICGI</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>ICGIERDATA<span class="sc">$</span>Endpoint <span class="ot">&lt;-</span> <span class="st">"ICGI"</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ICGIERDATA<span class="sc">$</span>response <span class="ot">&lt;-</span> ICGIERDATA<span class="sc">$</span>ICGI </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggresponseexpdist</span>(<span class="at">data =</span> ICGIERDATA,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="at">model_type =</span> <span class="st">"logistic"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_metrics =</span> <span class="fu">c</span>(<span class="st">"AUC"</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_metric_split =</span> <span class="st">"quartile"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="at">N_byexptile_ypos =</span> <span class="st">"with means"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose_plac =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="at">N_bydose_ypos =</span> <span class="st">"none"</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a><span class="at">mean_obs_bydose_text_size =</span> <span class="dv">0</span>,</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="at">N_text_size =</span> <span class="dv">3</span>,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a><span class="at">exposure_distribution_percent =</span> <span class="st">"%"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="864"></p>
 </figure>
 </div>
 </div>
