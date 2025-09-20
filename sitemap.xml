@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//posts/welcome/index.html</loc>
-    <lastmod>2025-08-18T20:28:37.910Z</lastmod>
+    <loc>https://smouksassi.github.io/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.836Z</lastmod>
   </url>
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//posts/exposuredistributions/index.html</loc>
-    <lastmod>2025-09-02T08:16:55.508Z</lastmod>
+    <loc>https://smouksassi.github.io/posts/alluvialplots/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.844Z</lastmod>
   </url>
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//index.html</loc>
-    <lastmod>2025-08-18T14:08:09.122Z</lastmod>
+    <loc>https://smouksassi.github.io/posts/KMplots/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.836Z</lastmod>
   </url>
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//about.html</loc>
-    <lastmod>2025-08-24T18:34:03.361Z</lastmod>
+    <loc>https://smouksassi.github.io/posts/erplots/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.848Z</lastmod>
   </url>
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//posts/erplots/index.html</loc>
-    <lastmod>2025-08-31T15:58:09.785Z</lastmod>
+    <loc>https://smouksassi.github.io/posts/welcome/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.852Z</lastmod>
   </url>
   <url>
-    <loc>https://smouksassi.github.io/smouksassi.github.io//posts/KMplots/index.html</loc>
-    <lastmod>2025-08-24T22:13:44.497Z</lastmod>
+    <loc>https://smouksassi.github.io/posts/exposuredistributions/index.html</loc>
+    <lastmod>2025-09-20T00:25:48.849Z</lastmod>
+  </url>
+  <url>
+    <loc>https://smouksassi.github.io/about.html</loc>
+    <lastmod>2025-09-20T00:25:48.832Z</lastmod>
   </url>
 </urlset>
