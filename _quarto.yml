@@ -7,9 +7,9 @@ website:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/
+        href: https://github.com//smouksassi
       - icon: twitter
-        href: https://twitter.com
+        href: https://x.com/poppkpd
 format:
   html:
     theme:
