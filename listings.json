@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/randomizationtest/index.html",
       "/posts/alluvialplots/index.html",
       "/posts/exposuredistributions/index.html",
       "/posts/KMplots/index.html",
