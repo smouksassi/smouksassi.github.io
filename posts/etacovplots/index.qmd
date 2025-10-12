@@ -1,0 +1,343 @@
+---
+title: "Exploring Covariate Plots"
+author: "Samer Mouksassi"
+date: "2025-10-11"
+categories: [covariates, visualization]
+image: "etacovplot.png"
+format:
+ html:
+  code-fold: true
+---
+
+In pharmacometrics analyses, it is common to plot the pharmacokinetic model parameters such as Clearance (CL) and Volume of distribution (Vd) versus continuous covariates such as Body Weight and Age and versus categorical covariates such as Sex, Race and renal function category. We will be using an example database that ships with the xpose.xtras package and explore out of the box available solutions and provide an alternative using custom functions plugged into the `GGally`'s package function `ggduo`.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+library(xpose)
+library(Certara.Xpose.NLME)       
+library(xpose.xtras)       
+library(tidyverse)
+library(GGally)
+source("ggpairs.fcn.r")
+
+xpdb_x <- xpdb_x %>%
+  set_var_labels(AGE="Age", MED1 = "Digoxin", .problem = 1) %>%
+  set_var_units(AGE="yrs")  %>%
+  set_var_levels(SEX=lvl_sex(), MED1 = lvl_bin())
+
+eta_vs_contcov(xpdb_x,etavar=ETA1, quiet=TRUE)
+
+```
+
+The Eta versus continuous covariates plot shows ETA(1) which is the random effect number one versus the values of the covariates shown in the facet strip of each panel. The run number, number of subjects, eta shrinkages for all eta not just ETA(1) are provided in the title and subtitle, as well as a caption "data". The `xpose.xtras` pacakge also support labeling/units of the variable to make the plots more legible yet we still don't know what ETA(1) refers to.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+eta_vs_catcov(xpdb_x,etavar=ETA1, quiet=TRUE)
+
+```
+
+A nice touch seen in the Eta versus categorical covriates plot is that out of the box we have the N by category shown on the x axis.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+xpdb_x$code$code[11:15]
+```
+
+Accessing the database code we can see that ETA(1) is ETACL, ETA2 is ETAV and ETA3 is ETAKA. Since this is based on ggplot2 one can easily modify the generated plots. Here I use `facet_grid` to have one common y axis. I also put the shrinkage on the y axis title.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+eta_vs_catcov(xpdb_x,etavar=c(ETA1), quiet=TRUE)+
+facet_grid(~variable,scales="free_x")+
+labs(x="",y=paste0("ηCL (",get_shk(xpdb_x)[1],"%)"),
+       subtitle="Based on @nind individuals")
+
+```
+
+I still cannot generate one plot for multiple etas nor can I combine categorical and continuous covariates, let alone if I want to color by one important categorical covariate. let us try `Certara.Xpose.NLME's eta_vs_cov` This function plot all eta's versus the specified categorical or continuous covariate.
+
+```{r,dev='ragg_png'}
+#| message: false 
+#| warning: false
+#| paged-print: true
+
+etalables <- c(
+  `ETA(1)` = paste0("ηCL\n(",get_shk(xpdb_x)[1],"%)"),
+  `ETA(2)` = paste0("ηV\n(",get_shk(xpdb_x)[2],"%)"),
+  `ETA(3)` = paste0("ηKa\n(",get_shk(xpdb_x)[3],"%)")
+)
+
+eta_vs_cov(xpdb_x,covariate=c("SEX"))+
+  facet_grid(variable~.,scales="free",switch="y",
+             labeller = labeller(variable=etalables))+
+  labs(x="",y="",
+   subtitle="Based on @nind individuals")+
+  theme(strip.placement = "outside",
+        axis.title.x = element_blank(),
+        axis.title.y.left = element_blank(),
+        strip.text.y.left = element_text(angle=0))
+
+```
+
+I still feel limited and not able to really look at everything as a whole. While I can try `patchwork`, I wanted to explore using `ggduo` which enables combining continuous and categorical covariates side by side. In this example, all categorical covariates have two levels. However, when the number of categories varies (e.g. Race with four categories) care should be taken on reserving space proportional to the number of the levels. To use `ggduo` we will use the raw table outputs and add a new categorical covariate combining MED1 and MED2 which will have levels: Both meds, MED2 only or none. `ggduo` allows the user to provide `mapping = aes(color = SEX, fill = SEX)` to color by any categorical covariate we want.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+xpdb_xdata <- xpose::get_data(xpdb_x)
+eta_shk <- get_shk(xpdb_x, wh = "eta")
+names(eta_shk) <- c("ηCL","ηVc","ηKa")
+
+xpdb_xdata <- xpdb_xdata %>% 
+  select(ID,CL,V,KA,
+         ηCL  = ETA1, ηVc  = ETA2, ηKa = ETA3,
+         CLCR,AGE,WT,
+         SEX, MED1, MED2
+         ) %>% 
+  distinct(ID,.keep_all = TRUE)
+
+
+xpdb_xdata <- xpdb_xdata %>% 
+  mutate(SEX = ifelse(SEX=="1","Male","Female"))%>% 
+  mutate(MED1 = ifelse(MED1=="1","Yes","No"))%>% 
+  mutate(MED2 = ifelse(MED2=="1","Yes","No"))%>% 
+  mutate(MED12 =  case_when(
+    MED1 == "Yes" & MED2 == "Yes" ~ "Both",
+    MED1 == "Yes" & MED2 == "No" ~ "Digoxin",
+    MED1 == "No" & MED2 == "Yes" ~ "MED2",
+    MED1 == "No" & MED2 == "No" ~ "none"
+  ))%>%
+  dplyr::group_by(SEX) %>%
+  dplyr::mutate(N_ID = dplyr::n() )%>%
+  dplyr::mutate(SEXN = paste0(SEX,"\nN = " ,N_ID) )%>%
+  ungroup()%>%
+  dplyr::group_by(MED1) %>%
+  dplyr::mutate(N_ID = dplyr::n() )%>%
+  dplyr::mutate(MED1N = paste0(MED1,"\nN = " ,N_ID) )%>%
+  ungroup()%>%
+  dplyr::group_by(MED2) %>%
+  dplyr::mutate(N_ID = dplyr::n() )%>%
+  dplyr::mutate(MED2N = paste0(MED2,"\nN = " ,N_ID) )%>%
+  ungroup()%>%
+  dplyr::group_by(MED12) %>%
+  dplyr::mutate(N_ID = dplyr::n() )%>%
+  dplyr::mutate(MED12N = paste0(MED12,"\nN = " ,N_ID) )%>%
+  ungroup()
+
+ggduo(xpdb_xdata,
+      columnsX =c("AGE", "WT","CLCR", "SEXN","MED1N","MED2N","MED12N") ,
+      columnsY = c("ηCL", "ηVc", "ηKa"),
+      columnLabelsX =       c("Age\n(years)", "Weight\n(kg)", "CRCL\n(ml/min)", 
+                              "Sex","Digoxin","Med2","Med1/2"),
+      columnLabelsY = paste0(names(eta_shk),"\n",eta_shk,"%"),
+      mapping = aes(color = SEX,fill = SEX),
+      xProportions = "auto",
+      types = list(
+        continuous = wrap(smooth_with_hline,
+                          method="loess",se=FALSE,span=0.75,
+                          alpha=0.5,
+                          hlinecolor="blue"
+                          ),
+        combo  = wrap(boxplot_with_hline,
+                      hlinecolor="blue",outliers = FALSE)
+      ),
+      switch ="both"
+)+
+  theme_bw()+
+  theme(strip.placement = "outside",
+        strip.text.y.left = element_text(angle=0),
+        strip.background = ggplot2::element_rect(fill = "#475c6b"), 
+        strip.text = ggplot2::element_text(face = "bold", 
+                                           color = "white",size = 10),
+        axis.text.x.bottom = element_text(size=rel(0.8)))+
+  labs(title = "Eta versus covariates | run001",
+       subtitle = "Based on 74 individuals",
+       caption ="cov model: CL = CLpop×(1+θ×(CLCR-65)), V = Vpop×(Body Weight)")+
+  scale_color_manual(values=c("#093B6D", "#EF761B"))+
+  scale_fill_manual(values=alpha(c("#093B6D", "#EF761B"),0.5)) 
+
+
+```
+
+This is an improvement, where we can look at all ηs, all the covariates we want, and all the important info added. We can then wrap the code into a function to select a subset of the ηs and covariates.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+eta_shk_model <- get_shk(xpdb_x, wh = "eta")
+names(eta_shk_model) <- c("ηCL","ηVc","ηKa")
+
+gof_etacovplot <- function(dataset= xpdb_xdata,
+                           covariates = c("AGE", "WT","CLCR",
+                                          "SEXN","MED1N","MED2N","MED12N") ,
+                           covlabels = c("Age\n(years)",
+                                         "Weight\n(kg)", "CRCL\n(ml/min)", 
+                                         "Sex","Digoxin","Med2","Med1/2"),
+                           etas = c("ηCL","ηVc","ηKa"),
+                           eta_shk = eta_shk_model,
+                           smooth_method = "loess"){
+  ggduo(dataset, covariates,etas,
+        mapping = aes(color = SEX, fill = SEX),
+        columnLabelsX = covlabels,
+        columnLabelsY = paste0(names(eta_shk),"\n",eta_shk,"%"),
+        xProportions = "auto",
+        types = list(
+          continuous = wrap(smooth_with_hline,
+                            hlinecolor="blue",se=FALSE,col="gray40",
+                            span = 0.9,
+                            alpha=0.5),
+          combo  = wrap(boxplot_with_hline,hlinecolor="blue",outliers = FALSE)
+        ),
+        switch ="both"
+  )+
+    theme_bw()+
+    theme(strip.placement = "outside",
+          strip.text.y.left = element_text(angle=0),
+          strip.background = ggplot2::element_rect(fill = "#475c6b"), 
+          strip.text = ggplot2::element_text(face = "bold", 
+                                             color = "white"))+
+    labs(title = "Eta versus covariates | run001",
+         subtitle = "Based on 74 individuals",
+         caption ="cov model: CL = CLpop×(1+θ×(CLCR-65)), V = Vpop×(Body Weight)")+
+    scale_color_manual(values=c("#093B6D", "#EF761B"))+
+    scale_fill_manual(values=alpha(c("#093B6D", "#EF761B"),0.5)) 
+  }
+  
+```
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+gof_etacovplot(dataset= xpdb_xdata,
+               covariates = c("AGE", "WT","SEXN") ,
+               covlabels = c("Age\n(years)",
+                             "Weight (kg)", "CRCL (ml/min)"),
+               etas = c("ηCL","ηVc","ηKa"))
+
+```
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+gof_etacovplot(dataset= xpdb_xdata,
+               covariates = c("MED1N","MED2N") ,
+               covlabels = c("Digoxin","Med2"),
+               etas = c("ηCL","ηVc","ηKa"))
+
+```
+
+It is straightforward, for `ggplot2` users to modify the underlying panel functions that are used by `GGally::ggduo` an example is shown below where I `smooth_with_hline` is based on `ggally_smooth` adding and `ggplot2` code to add a horizontal line and control its color via the `hlinecolor` argument.
+
+```{r, dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| code-fold: false
+
+smooth_with_hline <- function(data, mapping, method="loess", hlinecolor="red", ...) {
+  x <- eval_data_col(data, mapping$x)
+  y <- eval_data_col(data, mapping$y)
+  ggally_smooth(data, mapping,method = method, ...) +
+  geom_hline(color=hlinecolor,
+             data = data.frame(y = 0),
+             mapping = aes(yintercept = y),
+             inherit.aes = FALSE 
+    )
+}
+# how it is used in GGally 
+#wrap(smooth_with_hline,hlinecolor="blue",se=FALSE,
+#     col="gray40",span = 0.9,alpha=0.5)
+
+```
+
+Where are the p-values. I did not add p-values on purpose. Those wanting p-values can edit the function as they see fit. I don't think it is appropriate to sprinkle p-values left and right and make decision on non-specified tests. As a bonus, I will leave you with a pairs plots using default `ggpairs` with p-values for the correlations.
+
+```{r, dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+    ggpairs(xpdb_xdata,
+    mapping = aes(color = SEX, fill = SEX),
+          columns = c("WT","AGE","CLCR","SEX"),
+          columnLabels  = c("Weight\n(kg)","Age\n(years)", "CRCL\n(ml/min)","SEX"),
+  )+theme_bw()+
+    theme(strip.background = ggplot2::element_rect(fill = "#475c6b"), 
+          strip.text = ggplot2::element_text(face = "bold", 
+                                             color = "white",size = 12))+
+    labs(title = "Eta Correlations | run001",
+         subtitle = "Based on 74 individuals",
+         caption ="cov model: CL = CLpop×(1+θ×(CLCR-65)), V = Vpop×(Body Weight)")+
+    scale_color_manual(values=c("#093B6D", "#EF761B"))+
+    scale_fill_manual(values=alpha(c("#093B6D", "#EF761B"),0.5)) 
+
+```
+
+And with custom functions highlighting the panel if it is significant:
+
+```{r, dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+  ggpairs(xpdb_xdata,
+          columns = c("ηCL","ηVc","ηKa"),
+          columnLabels  = paste0(names(eta_shk_model),"\n",
+                                 eta_shk_model,"%"),
+          lower = list(continuous = my_custom_smooth),
+          upper = list(continuous = my_custom_cor_color),
+          diag =  list(continuous =my_custom_densityDiag),
+  )+
+    theme(strip.background = ggplot2::element_rect(fill = "#475c6b"), 
+          strip.text = ggplot2::element_text(face = "bold", 
+                                             color = "white",size = 12))+
+    labs(title = "Eta Correlations | run001",
+         subtitle = "Based on 74 individuals",
+         caption ="cov model: CL = CLpop×(1+θ×(CLCR-65)), V = Vpop×(Body Weight)")
+
+
+```
+
+Finally, in projects where we have lot of parameters, covariates, models we might wrap the plot generation into a loop that auto-generates tabs:
+
+::: {.panel-tabset}
+
+```{r, dev='ragg_png' , results='asis'}
+#| message: false
+#| warning: false
+#| paged-print: true
+
+for (i in 1:length(eta_shk_model)){
+  cat(paste0("### ", names(eta_shk[i]), "\n"))
+  p1 <- gof_etacovplot(dataset= xpdb_xdata,
+                       covariates = c("WT","SEXN","MED1N") ,
+                       covlabels = c("Weight (kg)", "Sex", "Digoxin"),
+                       etas = names(eta_shk_model)[i],
+                       eta_shk = eta_shk_model[i]
+  )
+  print(p1)
+  cat("\n\n")
+}
+
+```
+:::
+:::: 
