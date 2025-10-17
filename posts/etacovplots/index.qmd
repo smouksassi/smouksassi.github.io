@@ -319,8 +319,7 @@ And with custom functions highlighting the panel if it is significant:
 
 Finally, in projects where we have lot of parameters, covariates, models we might wrap the plot generation into a loop that auto-generates tabs:
 
-::: {.panel-tabset}
-
+::: panel-tabset
 ```{r, dev='ragg_png' , results='asis'}
 #| message: false
 #| warning: false
@@ -340,4 +339,3 @@ for (i in 1:length(eta_shk_model)){
 
 ```
 :::
-:::: 
