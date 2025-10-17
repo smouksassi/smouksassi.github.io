@@ -513,8 +513,8 @@ ggplot(out.ped.nca.all, aes(WT, AUC,col = TRTC, fill = TRTC))+
   theme(strip.placement = "outside",
         strip.text.y.left = element_text(angle=0),
         strip.background = ggplot2::element_rect(fill = "#475c6b"), 
-        strip.text = ggplot2::element_text(face = "bold", 
-                                           color = "white"))+
+        strip.text = ggplot2::element_text(face = "bold", color = "white"),
+        legend.position = "bottom")+
   transition_states(
     REGIMEN,
     transition_length = 2,
@@ -524,5 +524,4 @@ ggplot(out.ped.nca.all, aes(WT, AUC,col = TRTC, fill = TRTC))+
   exit_shrink() +
   ease_aes('sine-in-out')
 
-#anim_save("./boxplot.gif",type="cairo-png")
 ```
