@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/compareexposures/index.html",
       "/posts/etacovplots/index.html",
       "/posts/randomizationtest/index.html",
       "/posts/alluvialplots/index.html",

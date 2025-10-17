@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -34,14 +34,15 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -113,7 +114,7 @@ const typesetMath = (el) => {
     var macros = [];
     for (var i = 0; i < mathElements.length; i++) {
       var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN") {
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
         window.katex.render(texText.data, mathElements[i], {
           displayMode: mathElements[i].classList.contains('display'),
           throwOnError: false,
@@ -139,6 +140,8 @@ window.Quarto = {
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">smouksassi.github.io</span>
     </a>
@@ -192,7 +195,7 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Y292YXJpYXRlcw==">covariates <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGlzdHJpYnV0aW9ucw==">distributions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(4)</span></div><div class="category" data-category="c2ltdWxhdGlvbg==">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3RhdHM=">stats <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dmlzdWFsaXphdGlvbg==">visualization <span class="quarto-category-count">(5)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Y292YXJpYXRlcw==">covariates <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZGlzdHJpYnV0aW9ucw==">distributions <span class="quarto-category-count">(1)</span></div><div class="category" data-category="bmV3cw==">news <span class="quarto-category-count">(4)</span></div><div class="category" data-category="cGVkaWF0cmljcw==">pediatrics <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c2ltdWxhdGlvbg==">simulation <span class="quarto-category-count">(1)</span></div><div class="category" data-category="c3RhdHM=">stats <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dmlzdWFsaXphdGlvbg==">visualization <span class="quarto-category-count">(6)</span></div></div></div>
 <!-- main -->
 <main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
@@ -206,7 +209,39 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="Y292YXJpYXRlcyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1760166000000" data-listing-file-modified-sort="1760294287470" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2771">
+<div class="quarto-post image-right" data-index="0" data-categories="cGVkaWF0cmljcyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1760572800000" data-listing-file-modified-sort="1760665511126" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="18" data-listing-word-count-sort="3459">
+<div class="thumbnail"><a href="./posts/compareexposures/index.html" class="no-external">
+
+<img loading="lazy" src="./posts/compareexposures/backtoback.gif" class="thumbnail-image">
+
+</a></div>
+<div class="body">
+<h3 class="no-anchor listing-title">
+<a href="./posts/compareexposures/index.html" class="no-external">Comparing Exposures with back to back Density/Boxplots</a>
+</h3>
+<div class="listing-categories">
+
+<div class="listing-category" onclick="window.quartoListingCategory('cGVkaWF0cmljcw=='); return false;">pediatrics</div>
+
+<div class="listing-category" onclick="window.quartoListingCategory('dmlzdWFsaXphdGlvbg=='); return false;">visualization</div>
+
+</div>
+<div class="delink listing-description"><a href="./posts/compareexposures/index.html" class="no-external">
+In this post, I will cover visualizing simulated drug exposures head to head compare using some <code>ggplot2</code> tricks. First we use the NHANES body weight (kg), illustrate the…<sup></sup><sup></sup><sup></sup>
+</a></div>
+</div>
+<div class="metadata">
+<a href="./posts/compareexposures/index.html" class="no-external">
+<div class="listing-date">
+Oct 16, 2025
+</div>
+<div class="listing-author">
+Samer Mouksassi
+</div>
+</a>
+</div>
+</div>
+<div class="quarto-post image-right" data-index="1" data-categories="Y292YXJpYXRlcyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1760140800000" data-listing-file-modified-sort="1760665511133" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2770">
 <div class="thumbnail"><a href="./posts/etacovplots/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/etacovplots/etacovplot.png" class="thumbnail-image">
@@ -238,7 +273,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="c3RhdHMlMkNzaW11bGF0aW9u" data-listing-date-sort="1759388400000" data-listing-file-modified-sort="1759456378226" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1604">
+<div class="quarto-post image-right" data-index="2" data-categories="c3RhdHMlMkNzaW11bGF0aW9u" data-listing-date-sort="1759363200000" data-listing-file-modified-sort="1760665511136" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1604">
 <div class="thumbnail"><a href="./posts/randomizationtest/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/randomizationtest/ecdfplot.png" class="thumbnail-image">
@@ -270,7 +305,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1758265200000" data-listing-file-modified-sort="1760211167440" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1468">
+<div class="quarto-post image-right" data-index="3" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1758240000000" data-listing-file-modified-sort="1760665511090" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1468">
 <div class="thumbnail"><a href="./posts/alluvialplots/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/alluvialplots/alluvial.png" class="thumbnail-image">
@@ -302,7 +337,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="dmlzdWFsaXphdGlvbiUyQ2Rpc3RyaWJ1dGlvbnM=" data-listing-date-sort="1756710000000" data-listing-file-modified-sort="1756801015508" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2458">
+<div class="quarto-post image-right" data-index="4" data-categories="dmlzdWFsaXphdGlvbiUyQ2Rpc3RyaWJ1dGlvbnM=" data-listing-date-sort="1756684800000" data-listing-file-modified-sort="1760665511134" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2458">
 <div class="thumbnail"><a href="./posts/exposuredistributions/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/exposuredistributions/erdist.png" class="thumbnail-image">
@@ -334,7 +369,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="4" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1756105200000" data-listing-file-modified-sort="1756073624497" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2295">
+<div class="quarto-post image-right" data-index="5" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1756080000000" data-listing-file-modified-sort="1760665511082" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="12" data-listing-word-count-sort="2295">
 <div class="thumbnail"><a href="./posts/KMplots/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/KMplots/kmplot.png" class="thumbnail-image">
@@ -366,7 +401,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="5" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1755500400000" data-listing-file-modified-sort="1756655889785" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2672">
+<div class="quarto-post image-right" data-index="6" data-categories="bmV3cyUyQ3Zpc3VhbGl6YXRpb24=" data-listing-date-sort="1755475200000" data-listing-file-modified-sort="1760665511130" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="14" data-listing-word-count-sort="2672">
 <div class="thumbnail"><a href="./posts/erplots/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/erplots/erplot.png" class="thumbnail-image">
@@ -398,7 +433,7 @@ Samer Mouksassi
 </a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="6" data-categories="bmV3cw==" data-listing-date-sort="1755241200000" data-listing-file-modified-sort="1755548917910" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="249">
+<div class="quarto-post image-right" data-index="7" data-categories="bmV3cw==" data-listing-date-sort="1755216000000" data-listing-file-modified-sort="1760665511138" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="249">
 <div class="thumbnail"><a href="./posts/welcome/index.html" class="no-external">
 
 <img loading="lazy" src="./posts/welcome/erplot.jpg" class="thumbnail-image">
@@ -482,13 +517,14 @@ Samer Mouksassi
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -503,7 +539,7 @@ Samer Mouksassi
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/smouksassi\.github\.io\/\/");
+        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
