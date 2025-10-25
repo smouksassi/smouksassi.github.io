@@ -1,0 +1,320 @@
+---
+title: "Optimizing Doses to maximize AUC's utility function"
+author: "Samer Mouksassi"
+date: "2025-10-25"
+categories: [pediatrics, visualization, animation]
+image: "therapeuticpercent.gif"
+format:
+ html:
+  code-fold: true
+---
+
+In this post, I will continue on the theme of last week post by illustrating how can we find the dose that would optimize not only the percentages of patient within the target window but also computing a utility score that penalizes the doses having too many patients above target.
+
+I will use a simple clearance model, allometrically scaled by body weight and with a maturation function. Correlated Age/Weight pairs from Age 0 to Age 5 years will be plugged into the clearance equation, with between subject variability of 30 %. AUCs are computed as Dose/CL. The currently proposed dose is a 5 mg/kg which result in patients distributed as [45% below]{style="color:#4682AC"}, [53% within]{style="color:#336343"} and [2% above]{style="color:#EE3124"} target .
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| fig-height: 5
+#| fig-width: 9
+
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(patchwork)
+library(gganimate)
+library(magick)
+set.seed(1654132)
+pediatricdemogs <- read.csv("pediatricdemogs.csv") %>% 
+  filter(AGE<=5) 
+
+pediatricdemogs$PMA <- (pediatricdemogs$AGE*52) +40
+pediatricdemogs$MAT <-  (pediatricdemogs$PMA ^3.4 )/( (pediatricdemogs$PMA ^3.4 )+(47.7^3.4 )  )
+pediatricdemogs$CL <-  12*(pediatricdemogs$WT/12)^0.75*pediatricdemogs$MAT
+pediatricdemogs$CLi <- pediatricdemogs$CL*exp(rnorm(n = length(pediatricdemogs$CL),mean = 0 , sd = sqrt(0.09)))
+pediatricdemogs$CLikg <- pediatricdemogs$CLi/pediatricdemogs$WT
+pediatricdemogs$DOSE   <- 120
+pediatricdemogs$AUC <- pediatricdemogs$DOSE/pediatricdemogs$CLi
+pediatricdemogs$DOSEMG <- 5*pediatricdemogs$WT
+pediatricdemogs$AUCMG <- pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+
+percentagesoriginal<- pediatricdemogs %>%
+  summarize(nvalues = length(AUCMG),
+            a.below = length(AUCMG[AUCMG<5])/nvalues,
+            b.within = length(AUCMG[AUCMG>=5 & AUCMG<=10])/nvalues,
+            c.above = length(AUCMG[AUCMG>10])/nvalues,
+            DOSEMG = mean(DOSEMG),
+            medauc = median(AUCMG))
+
+
+
+ggplot(pediatricdemogs )+
+      annotate(geom="text",x=1,y=1, col ="#7059a6",label="dose: 5 mg/kg ×",
+           vjust =0.5,hjust = 0,  alpha=0.5)+
+  geom_density(aes(x = AUCMG,
+                   y=after_stat(scaled),
+                   fill = after_stat(
+                     case_when(x < 5 ~ "a.below",
+                               x >= 5 & x <= 10 ~ "b.within",
+                               x > 10 ~ "c.above"))),alpha=0.2,
+               color ="transparent") +
+  geom_text(data=percentagesoriginal,
+            aes(x = 4,y =  a.below, label = round(100* a.below,1)),col= "#4682AC")+
+  geom_text(data=percentagesoriginal,
+            aes(x = 7.5,y =  b.within, label = round(100* b.within,1)),col= "#336343")+
+  geom_text(data=percentagesoriginal,
+            aes(x = 15,y =  c.above, label = round(100* c.above ,1)),col= "#EE3124")+
+    geom_text(data=percentagesoriginal,
+            aes(x = 5.187374,y =  1, label ="1"),col= "#7059a6",
+            vjust =0.5, alpha = 0.5)+
+geom_vline(xintercept = 5 , linetype ="dashed")+
+geom_vline(xintercept = 10 , linetype ="dashed")+
+  scale_x_log10(breaks =c(1,3,5,10,20,30))+
+  labs(fill="",y="Normalized AUC Densities",x="AUC (log scale)")+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.9,0.7),
+        legend.background = element_blank())+  scale_fill_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#FDBB2F", "#7059a6", "#803333"))+
+  scale_color_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#336343", "#7059a6", "#803333"))+
+  scale_y_continuous(labels = scales::percent)+
+  coord_cartesian(ylim=c(0,1),xlim =c(1,30))
+
+```
+
+Next, we will vary the dose by using a multiplier ranging from 0.6× to 2× with 5% increments, compute the percentages and show the distributions. I show a facetted plot first including lowest, orginal and highest dose.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| fig-height: 5
+#| fig-width: 9
+
+pediatricdemogs$AUCMG00  <- 0.6*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG01  <- 0.65*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG02  <- 0.70*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG03  <- 0.75*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG04  <- 0.80*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG05  <- 0.85*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG06  <- 0.90*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG07  <- 0.95*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG08  <- 1.00*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG09  <- 1.05*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG10  <- 1.10*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG11  <- 1.15*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG12  <- 1.20*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG13  <- 1.25*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG14  <- 1.35*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG15  <- 1.40*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG16  <- 1.45*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG17  <- 1.50*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG18  <- 1.55*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG19  <- 1.60*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG20  <- 1.65*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG21  <- 1.70*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG22  <- 1.75*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG23  <- 1.80*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG24  <- 1.90*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+pediatricdemogs$AUCMG25  <- 2.00*pediatricdemogs$DOSEMG/pediatricdemogs$CLi
+
+pediatricdemogslong<- pediatricdemogs %>% 
+  gather(key,value,AUCMG00:AUCMG25)%>% 
+  group_by(key) %>% 
+  mutate(medauc = median(value))%>% 
+  mutate(dosemgkg=round(value*CLi/DOSEMG,2 ))
+
+pediatricdemogslong <- pediatricdemogslong %>% 
+  mutate(filldensity = case_when(value < 5 ~ "a.below",
+                                 value >= 5 & value <= 10 ~ "b.within",
+                                 value > 10 ~ "c.above"))
+
+percentages<- pediatricdemogslong %>%
+    group_by(key) %>% 
+  summarize(nvalues = length(value),
+            a.below = length(value[value<5])/nvalues,
+            b.within = length(value[value>=5 & value<=10])/nvalues,
+            c.above = length(value[value>10])/nvalues,
+            dosemgkg = mean(dosemgkg),
+            medauc = median(medauc)) 
+
+percentages$utility <- 
+  (1*(1-percentages$a.below)+
+     +2*(percentages$b.within)+
+     4*(1-percentages$c.above))/(1+2+4)
+
+percentages$dosemgy <- percentages$dosemgkg
+
+percentageslong <- percentages%>%
+  gather(TA,percentage,
+         `a.below`,`b.within`,`c.above`,utility,dosemgy,
+         factor_key = TRUE)
+percentageslong$label <- ifelse(percentageslong$TA=="dosemgy", percentageslong$percentage/100,
+                                percentageslong$percentage)
+percentageslong$percentage <- ifelse(percentageslong$TA=="dosemgy",1,
+                                     percentageslong$percentage)
+
+percentageslongfiltered <- percentageslong %>% 
+         filter(dosemgkg %in% c(0.6,1,2))%>% 
+         filter(!TA%in%c("utility","dosemgy")) %>% 
+  arrange(dosemgkg) %>% 
+  mutate(xpos= ifelse(TA=="a.below",3,
+                      ifelse(TA=="c.above",20,7.5)))
+
+
+
+ggplot(pediatricdemogslong %>% 
+         filter(dosemgkg %in% c(0.6,1,2)))+
+  annotate(geom="text",x=1,y=1, col ="#7059a6",label="5 mg/kg ×",
+           vjust =0,hjust = 0,  alpha=0.5)+
+geom_vline(xintercept = 5 , linetype ="dashed")+
+geom_vline(xintercept = 10 , linetype ="dashed")+
+  geom_density(aes(x = value,
+                   group = key,
+                   y=after_stat(scaled),
+                   fill = after_stat(
+                     case_when(x < 5 ~ "a.below",
+                               x >= 5 & x <= 10 ~ "b.within",
+                               x > 10 ~ "c.above"))),alpha=0.2,
+               color ="transparent") +
+geom_text(data=pediatricdemogslong %>% 
+          filter(dosemgkg %in% c(0.6,1,2))%>% 
+              distinct(key,dosemgkg,medauc),
+            aes(x=medauc,y=1,label=as.factor(dosemgkg)),
+            col ="#7059a6", vjust =0, alpha = 0.5)+
+  geom_text(data= percentageslongfiltered,
+            aes(x=xpos,y=percentage ,label=round(100*percentage,1),
+                col = TA), vjust =0, alpha = 0.5,show.legend = FALSE)+
+  labs(fill="",y="Normalized AUC Densities",x="AUC (log scale)")+
+  scale_fill_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#FDBB2F", "#7059a6", "#803333"))+
+  scale_color_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#336343", "#7059a6", "#803333"))+
+  facet_grid(dosemgkg~.,switch="y")+
+  scale_x_log10(breaks =c(1,3,5,10,20,30))+
+  scale_y_continuous(labels = scales::percent)+
+  coord_cartesian(ylim=c(0,1.1),xlim =c(1,30))+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.9,0.7),
+        legend.background = element_blank(),
+        strip.background = element_rect(fill = "#475c6b"),
+        strip.text.y.left =    element_text(face = "bold",color = "white",angle=0),
+        strip.placement = "outside", axis.title.y.left = element_blank())
+
+```
+
+And then, I animate the distributions across all tested dose increments. As the dose increases we are effectively shifting the distribution and centering the AUC's around a new median AUC. The percentages of patients below, within and above target will shift accordingly.
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| fig-height: 5
+#| fig-width: 9
+
+
+percentageslongfiltered <- percentageslong%>% 
+         filter(!TA%in%c("utility","dosemgy")) %>% 
+  arrange(dosemgkg) %>% 
+  mutate(xpos= ifelse(TA=="a.below",3,
+                      ifelse(TA=="c.above",20,7.5)))
+
+a<- ggplot(pediatricdemogslong )+
+  annotate(geom="text",x=1,y=1, col ="#7059a6",label="5 mg/kg ×",
+           vjust =0,hjust = 0,  alpha=0.5)+
+geom_vline(xintercept = 5 , linetype ="dashed")+
+geom_vline(xintercept = 10 , linetype ="dashed")+
+geom_density(aes(x = value,
+                   group = key,
+                   y=after_stat(scaled),
+                   fill = after_stat(
+                     case_when(x < 5 ~ "a.below",
+                               x >= 5 & x <= 10 ~ "b.within",
+                               x > 10 ~ "c.above"))),alpha=0.2,
+               color ="transparent") +
+geom_text(data=pediatricdemogslong %>% 
+              distinct(key,dosemgkg,medauc),
+            aes(x=medauc,y=1,label=as.factor(dosemgkg)),
+            col ="#7059a6", vjust =0, alpha = 0.5)+
+  geom_text(data= percentageslongfiltered,
+            aes(x=xpos,y=percentage ,label=round(100*percentage,1),
+                col = TA), vjust =0, alpha = 0.5,show.legend = FALSE)+
+  labs(fill="",y="Normalized AUC Densities",x="AUC (log scale)")+
+  scale_fill_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#FDBB2F", "#7059a6", "#803333"))+
+  scale_color_manual(values=c("#4682AC", 
+            "#336343", "#EE3124", "#336343", "#7059a6", "#803333"))+
+  scale_x_log10(breaks =c(1,3,5,10,20,30))+
+  scale_y_continuous(labels = scales::percent,breaks =seq(0,1,0.25))+
+  coord_cartesian(ylim=c(0,1.1),xlim =c(1,30))+
+    theme_bw(base_size = 16)+
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.9,0.7),
+        legend.background = element_blank(),
+        strip.background = element_rect(fill = "#475c6b"),
+        strip.text.y.left = element_text(face = "bold",color = "white",angle=0),
+        strip.placement = "outside")
+
+
+a  +
+  transition_states(
+    dosemgkg,
+    transition_length = 2,
+    state_length = 1,
+    wrap = FALSE
+  ) +
+  enter_drift() + 
+  exit_fade() +
+  ease_aes('sine-in-out')
+
+```
+
+Finally, I also add a plot animating the percentages of target attainments with the utility index overlaid. The utility score was computed using the following formula: (1 × (1 - % below) + 2 × (% within) + 4 × (1 - % above))/ (1+2+4)
+
+```{r,dev='ragg_png'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| fig-height: 5
+#| fig-width: 9
+
+
+ b<-  ggplot(percentageslong)+
+  geom_vline(xintercept = c(5.187),col="gray",alpha=0.5)+
+  geom_vline(xintercept = c(7.00),col="#336343",alpha=0.5)+
+  geom_vline(xintercept = c(6.484),col="#FDBB2F",alpha=0.5)+
+  geom_line(aes(x=medauc,y=percentage,col=TA,
+                linetype = TA),lwd=1,alpha=0.5)+
+  annotate(geom="text",x=1,y=1, col ="#7059a6",label="5 mg/kg ×",
+           vjust =0.5,hjust = 0,alpha=0.5)+
+  geom_text(aes(x=medauc,y=percentage,col=TA,
+                label = as.factor(round(100*label,1))),
+             alpha=0.5)+
+    scale_color_manual(values=c("#4682AC", "#336343", "#EE3124",
+                              "#FDBB2F", "#7059a6", "#803333"),
+                     limits = c("a.below","b.within","c.above","utility"),
+                     na.value = "#7059a6")+
+  scale_linetype_manual(values=c("solid","solid","solid","solid","blank"))+
+  theme_bw(base_size = 16)+
+  theme(legend.position = "inside",
+        legend.position.inside = c(0.9,0.7),
+        legend.background = element_blank())+
+  scale_y_continuous(labels = scales::percent)+
+  scale_x_log10(breaks =c(1,3,5,10,20,30))+
+  labs(x="Median AUC for the tested Dose mg/kg",
+       y="Percentages",color="")+
+  coord_cartesian(ylim=c(0,1),xlim =c(1,30))+
+  guides(linetype = "none")
+
+b +
+  transition_reveal(dosemgkg)
+
+```
+
+What other utility index would make sense to you ? What if we use a model-based optimization to find the best dose instead of testing all possibilities?
+
+In this example we see that the maximum utility is reached at 5 mg/kg × 1.25 while the maximum percentage of patients within is achieved at 5 mg/kg × 1.35.
