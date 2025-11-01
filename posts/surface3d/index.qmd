@@ -171,7 +171,9 @@ p
 
 ```
 
-Today is Halloween ! Boo !
+Today is Halloween ! Boo ! 
+![Spooky](Pumpkin3D.gif)
+
 
 ```{r}
 #| message: false
@@ -213,6 +215,6 @@ persp3d(x, y, z, color = col, aspect=FALSE)
 
 ```
 
-If you have any questions feel free to contact me on [github](https://github.com/smouksassi/ggquickeda/issues "submit issues").
+If you have any questions feel free to contact using my blog's channels.
 
 
