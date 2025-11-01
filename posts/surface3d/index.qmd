@@ -171,7 +171,9 @@ p
 
 ```
 
-Today is Halloween ! Boo !
+Today is Halloween ! Boo ! 
+![Spooky](Pumpkin3D.gif)
+
 
 ```{r}
 #| message: false
