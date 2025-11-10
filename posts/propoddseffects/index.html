@@ -2,14 +2,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.8.25">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Samer Mouksassi">
 <meta name="dcterms.date" content="2025-11-10">
 
-<title>Communicating Longitudinal a Proportional Odds Model with Forest Plots – smouksassi.github.io</title>
+<title>Communicating a Longitudinal Proportional Odds Model with Forest Plots – smouksassi.github.io</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -69,14 +69,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../../">
 <script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-0b37c64f34216b628666a8dac638b53b.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -116,6 +117,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="../../index.html" class="navbar-brand navbar-brand-logo">
+    </a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">smouksassi.github.io</span>
     </a>
@@ -151,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <h1 class="title">Communicating Longitudinal a Proportional Odds Model with Forest Plots</h1>
+      <h1 class="title">Communicating a Longitudinal Proportional Odds Model with Forest Plots</h1>
                                 <div class="quarto-categories">
                 <div class="quarto-category">Forest Plots</div>
                 <div class="quarto-category">visualization</div>
@@ -195,7 +198,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The data included longitudinal anthropometry, sociodemographic factors, maternal-reported illnesses, and antibiotic use; child feeding practices; dietary intake starting at 9 months; and longitudinal blood, urine, and stool samples to investigate non-diarrheal enteropathogens, micronutrients, gut inflammation and permeability, and systemic inflammation. The length-for-age&nbsp;<em>Z</em>-scores (LAZ) was categorized into 3 groups (not stunted, ≥−1; at risk, &lt;−1 to −2; and stunted, &lt;−2), and used multivariable ordinal logistic regression to model the cumulative odds of being in a lower length-for-age category (at risk or stunted). The goal of this post is to show how this model was communicated, share code that would allow you to reproduce the paper figures and propose some alternatives. For complete details refer to the paper and the shared code that came with it.</p>
 <p>A common problem when analyzing longitudinal data with time varying covariates changing over the course of the trial is how to analyze it properly and how to compute and report meaningful odds ratios (ORs). The model code was the following :</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rms)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rms)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>d <span class="ot">&lt;-</span> <span class="fu">datadist</span>(data)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">datadist=</span><span class="st">"d"</span>)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
@@ -228,13 +231,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>      sumprocum),</span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="at">x=</span>T,<span class="at">y=</span>T, <span class="at">data =</span> data, <span class="at">tol=</span><span class="fl">1e-8</span>) </span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>finalmodel <span class="ot">=</span> <span class="fu">robcov</span> ( model , <span class="at">cluster =</span> data<span class="sc">$</span>id )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>finalmodel <span class="ot">=</span> <span class="fu">robcov</span> ( model , <span class="at">cluster =</span> data<span class="sc">$</span>id )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The <code>lrm</code> function from the excellent <code>rms</code> package is used as it allows using flexible linear splines with <code>lsp</code> with prespecified knots at 6, 12 and 18 months, interaction between age and predictors as well as accounting for portein and caloric intake above 9 months. The <code>robcov</code> function allows to adjust the model standard errors by declaring the cluster as the subject <code>id</code>. While the <code>rms</code> package has automatic <code>summary</code> and <code>plot</code> methods that produce forest plots it does not take into account the time varying nature of covariate nor the longitudinal nature of the data. We opted to compute the odds ratios at 0, 12 and 24 months using the overall (pooled) model as well as using fits by individuals sites. We computed the interquartile cumulative ORs for continuous variables, i.e., the ratio of odds between the 25th and 75th percentiles or between the 75th and 25th percentiles of the risk factor, at the specific time point, depending on the direction that indicated worse exposure. This is the default in <code>rms</code> and the rationale is that this would represent the ORs around 50% of the data. The paper Figure 4 had a customized forest plot that included the top 5 risk factors overall side by side with the by site ORs:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(ggplot2 )</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
@@ -293,7 +296,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="fl">0.25</span>,<span class="dv">20</span>))</span>
 <span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>(ppooled <span class="sc">|</span> pindividual) <span class="sc">+</span></span>
 <span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">axis_titles =</span> <span class="st">"collect_x"</span>)<span class="sc">+</span></span>
-<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">'A'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -313,7 +316,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Should we row or column split by risk factor ?</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ggquickeda<span class="sc">::</span><span class="fu">run_ggquickeda</span>(Figure4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ggquickeda<span class="sc">::</span><span class="fu">run_ggquickeda</span>(Figure4)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><code>ggquickeda::run_ggquickeda(yourdata)</code> launch a <code>ggplot2</code> R shiny interface with the R data loaded here is some snapshots from my tests:</p>
 <div class="quarto-figure quarto-figure-center">
@@ -340,7 +343,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Figure4, <span class="fu">aes</span>(<span class="at">x =</span> effect, <span class="at">y =</span>cn ,<span class="at">xmin =</span> lower, <span class="at">xmax =</span> upper)) <span class="sc">+</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Figure4, <span class="fu">aes</span>(<span class="at">x =</span> effect, <span class="at">y =</span>cn ,<span class="at">xmin =</span> lower, <span class="at">xmax =</span> upper)) <span class="sc">+</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_rect</span>(<span class="at">data=</span>Figure4pooled,</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">aes</span>(<span class="at">xmin =</span> pool_lower, <span class="at">xmax =</span> pool_upper,<span class="at">fill=</span><span class="fu">as.factor</span>(iagems2)),</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">ymin=</span><span class="sc">-</span><span class="cn">Inf</span>,<span class="at">ymax=</span> <span class="cn">Inf</span>,<span class="at">alpha=</span><span class="fl">0.5</span>,<span class="at">col=</span><span class="cn">NA</span>,<span class="at">inherit.aes =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
@@ -370,7 +373,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">linetype=</span><span class="dv">0</span>),<span class="at">legend.key.width=</span><span class="fu">unit</span>(<span class="fl">1.2</span>,<span class="st">"line"</span>) ,</span>
 <span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>) ,</span>
 <span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>( <span class="at">size =</span> <span class="dv">8</span>),)<span class="sc">+</span></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -386,7 +389,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggh4x)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggh4x)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Figure4, <span class="fu">aes</span>(<span class="at">x =</span> effect, <span class="at">y =</span>cn ,<span class="at">xmin =</span> lower, <span class="at">xmax =</span> upper)) <span class="sc">+</span></span>
@@ -428,7 +431,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.key =</span> <span class="fu">element_rect</span>(<span class="at">linetype=</span><span class="dv">0</span>),<span class="at">legend.key.width=</span><span class="fu">unit</span>(<span class="fl">1.2</span>,<span class="st">"line"</span>) ,</span>
 <span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>) ,</span>
 <span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>( <span class="at">size =</span> <span class="dv">8</span>),)<span class="sc">+</span></span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -442,7 +445,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Figure4 <span class="sc">%&gt;%</span> </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(Figure4 <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">arrange</span>(country,iagems2), <span class="fu">aes</span>(<span class="at">x =</span> effect, <span class="at">y =</span>iagems2 ,<span class="at">xmin =</span> lower, <span class="at">xmax =</span> upper)) <span class="sc">+</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid2</span>( cn <span class="sc">~</span>name,<span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">render_empty =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">trans =</span> <span class="st">"log"</span>, <span class="at">minor_breaks =</span> <span class="cn">NULL</span>,</span>
@@ -490,7 +493,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">10</span>) ,</span>
 <span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>( <span class="at">size =</span> <span class="dv">8</span>))<span class="sc">+</span></span>
 <span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>) <span class="sc">+</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip=</span><span class="st">"off"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">clip=</span><span class="st">"off"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -500,7 +503,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p>As always, please reach out on LinkedIn or github to propose your ideas and continue the discussion !</p>
+<p>Hey how about using <code>coveffectsplot</code> ? Yes the <code>forest_plot</code> function from my package is general. You just need to have the correct names for it to work, and you can also play with the included R shiny app via <code>run_interactiveforestplot()</code> here is one example! I also show how you can add different ref line by panel using the <code>ref_value_by_panel = TRUE</code> and <code>ref_value_by_panel_data</code> arguments. For now you cannot specify different areas around these lines as the areas are a multipliers of the reference line for now.</p>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(coveffectsplot)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>Figure4<span class="sc">$</span>mid <span class="ot">&lt;-</span> Figure4<span class="sc">$</span>effect</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>plotdata <span class="ot">&lt;-</span> Figure4 <span class="sc">%&gt;%</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="at">midlabel =</span> <span class="fu">format</span>(<span class="fu">round</span>(mid,<span class="dv">2</span>), <span class="at">nsmall =</span> <span class="dv">2</span>),</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">lowerlabel =</span> <span class="fu">format</span>(<span class="fu">round</span>(lower,<span class="dv">2</span>), <span class="at">nsmall =</span> <span class="dv">2</span>),</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">upperlabel =</span> <span class="fu">format</span>(<span class="fu">round</span>(upper,<span class="dv">2</span>), <span class="at">nsmall =</span> <span class="dv">2</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">LABEL =</span> <span class="fu">paste0</span>(midlabel, <span class="st">" ["</span>, lowerlabel, <span class="st">"-"</span>, upperlabel, <span class="st">"]"</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>plotdata <span class="ot">&lt;-</span> plotdata <span class="sc">%&gt;%</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">covname =</span>name)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plotdata<span class="sc">$</span>label <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(plotdata<span class="sc">$</span>cn)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plotdata<span class="sc">$</span>paramname <span class="ot">&lt;-</span> plotdata<span class="sc">$</span>iagems2</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>fp <span class="ot">&lt;-</span> <span class="fu">forest_plot</span>(plotdata,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">paramname_color =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">paramname_shape =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">interval_col =</span> <span class="fu">c</span>(<span class="st">"#B5B5B5"</span>,<span class="st">"#9BC5E1"</span>,<span class="st">"#E98981"</span> ),</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">interval_shape =</span> <span class="fu">c</span>(<span class="st">"triangle"</span>,<span class="st">"circle"</span>,<span class="st">"square"</span>),</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>                        <span class="at">combine_interval_shape_legend =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend_ncol_interval =</span> <span class="dv">3</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend_ncol_shape =</span> <span class="dv">3</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>            <span class="at">interval_size =</span> <span class="fl">0.5</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">facet_formula =</span> <span class="st">"paramname~covname"</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>            <span class="at">facet_switch =</span> <span class="st">"y"</span>,</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>            <span class="at">facet_scales =</span> <span class="st">"free"</span>,</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>            <span class="at">facet_space =</span> <span class="st">"fixed"</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>            <span class="at">logxscale =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">major_x_ticks =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.25</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">20</span>,<span class="dv">40</span>),</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>            <span class="at">major_x_labels =</span>  <span class="fu">c</span>(<span class="st">"1/10"</span>,<span class="st">"1/4"</span>, <span class="st">"1/2"</span>, <span class="st">"1/1"</span>, <span class="st">"2/1"</span>,</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"5/1"</span>, <span class="st">"10/1"</span>, <span class="st">"20/1"</span>,<span class="st">"40/1"</span>),</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_legend_text =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">Pooled Effect (vertical line)</span><span class="sc">\n</span><span class="st">"</span>,</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>            <span class="at">xlabel =</span> <span class="st">"Odds of being in a lower length-for-age category : (LAZ &lt; -2) / (-2 \u2264 LAZ &lt; -1) or (-2 \u2264 LAZ &lt; -1) / (LAZ \u2265 -1)"</span>,</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_facet_text_size =</span> <span class="dv">6</span>,</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_facet_text_size =</span> <span class="dv">10</span>,</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_facet_text_angle =</span> <span class="dv">90</span>,</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>            <span class="at">strip_placement =</span> <span class="st">"outside"</span>,</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>            <span class="at">x_label_text_size =</span> <span class="dv">6</span>,</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>            <span class="at">xy_facet_text_bold =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>            <span class="at">y_label_text_size =</span> <span class="dv">10</span>,</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>            <span class="at">base_size =</span> <span class="dv">10</span>,</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>            <span class="at">table_position =</span> <span class="st">"right"</span>,</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot_table_ratio =</span> <span class="fl">1.5</span>,</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>            <span class="at">show_table_facet_strip =</span> <span class="st">"y"</span>,</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>            <span class="at">table_facet_switch =</span> <span class="st">"x"</span>,</span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>            <span class="at">show_table_yaxis_tick_label =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>            <span class="at">table_text_size =</span> <span class="fl">2.5</span>,</span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>            <span class="at">show_ref_area =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_value_col =</span> <span class="st">"black"</span>,</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_value_linetype =</span> <span class="st">"solid"</span>,</span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_value_by_panel =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>            <span class="at">ref_value_by_panel_data =</span> <span class="fu">as.data.frame</span>(</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>              plotdata <span class="sc">%&gt;%</span> </span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>                <span class="fu">distinct</span>(paramname,covname,pool_effect) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>                <span class="fu">mutate</span>(<span class="at">xintercept=</span>pool_effect)</span>
+<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a>),</span>
+<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>            <span class="at">table_title =</span> <span class="st">"Point Estimates and assciated 95% CI"</span></span>
+<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="1152"></p>
+<p>As always, reach out on LinkedIn or github to propose your ideas and to continue the discussion !</p>
 
 
 
@@ -556,13 +624,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -577,7 +646,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/smouksassi\.github\.io\/\/");
+        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
