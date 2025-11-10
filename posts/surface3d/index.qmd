@@ -2,7 +2,7 @@
 title: "Visualizing 2D Densities with 3D Surfaces and projections"
 author: "Samer Mouksassi"
 date: "2025-10-31"
-categories: [news, visualization]
+categories: [3D, visualization]
 image: "3Dsurface.png"
 format:
  html:
