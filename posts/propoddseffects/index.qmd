@@ -400,4 +400,4 @@ fp <- forest_plot(plotdata,
 
 ```
 
-As always, reach out on LinkedIn or github to propose your ideas and to continue the discussion !
+As always, reach out at the [LinkedIn Post](https://www.linkedin.com/feed/update/urn:li:ugcPost:7393767565904474112/) or github to propose your ideas and to continue the discussion !
