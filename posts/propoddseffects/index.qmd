@@ -1,5 +1,5 @@
 ---
-title: "Communicating Longitudinal a Proportional Odds Model with Forest Plots"
+title: "Communicating a Longitudinal Proportional Odds Model with Forest Plots"
 author: "Samer Mouksassi"
 date: "2025-11-10"
 categories: [Forest Plots, visualization]
@@ -329,4 +329,75 @@ ggplot(Figure4 %>%
 
 ```
 
-As always, please reach out on LinkedIn or github to propose your ideas and continue the discussion !
+Hey how about using `coveffectsplot` ? Yes the `forest_plot` function from my package is general. You just need to have the correct names for it to work, and you can also play with the included R shiny app via `run_interactiveforestplot()` here is one example! I also show how you can add different ref line by panel using the `ref_value_by_panel = TRUE` and `ref_value_by_panel_data` arguments. For now you cannot specify different areas around these lines as the areas are a multipliers of the reference line for now.
+
+```{r,dev='ragg_png', results='asis'}
+#| message: false
+#| warning: false
+#| paged-print: true
+#| fig-height: 7
+#| fig-width: 12
+library(coveffectsplot)
+
+Figure4$mid <- Figure4$effect
+
+plotdata <- Figure4 %>%
+  dplyr::mutate(midlabel = format(round(mid,2), nsmall = 2),
+         lowerlabel = format(round(lower,2), nsmall = 2),
+         upperlabel = format(round(upper,2), nsmall = 2),
+         LABEL = paste0(midlabel, " [", lowerlabel, "-", upperlabel, "]"))
+plotdata <- plotdata %>%
+  mutate(covname =name)
+plotdata$label <- as.factor(plotdata$cn)
+plotdata$paramname <- plotdata$iagems2
+
+
+fp <- forest_plot(plotdata,
+            paramname_color = TRUE,
+            paramname_shape = TRUE,
+            interval_col = c("#B5B5B5","#9BC5E1","#E98981" ),
+            interval_shape = c("triangle","circle","square"),
+                        combine_interval_shape_legend = TRUE,
+            legend_ncol_interval = 3,
+            legend_ncol_shape = 3,
+            interval_size = 0.5,
+            facet_formula = "paramname~covname",
+            facet_switch = "y",
+            facet_scales = "free",
+            facet_space = "fixed",
+            logxscale = TRUE,
+            major_x_ticks = c(0.1,0.25, 0.5, 1, 2, 5, 10, 20,40),
+            major_x_labels =  c("1/10","1/4", "1/2", "1/1", "2/1",
+                                "5/1", "10/1", "20/1","40/1"),
+            ref_legend_text = "\nPooled Effect (vertical line)\n",
+            xlabel = "Odds of being in a lower length-for-age category : (LAZ < -2) / (-2 \u2264 LAZ < -1) or (-2 \u2264 LAZ < -1) / (LAZ \u2265 -1)",
+            x_facet_text_size = 6,
+            y_facet_text_size = 10,
+            y_facet_text_angle = 90,
+            strip_placement = "outside",
+            x_label_text_size = 6,
+            xy_facet_text_bold = FALSE,
+            y_label_text_size = 10,
+            base_size = 10,
+            table_position = "right",
+            plot_table_ratio = 1.5,
+            show_table_facet_strip = "y",
+            table_facet_switch = "x",
+            show_table_yaxis_tick_label = FALSE,
+            table_text_size = 2.5,
+            show_ref_area = FALSE,
+            ref_value_col = "black",
+            ref_value_linetype = "solid",
+            ref_value_by_panel = TRUE,
+            ref_value_by_panel_data = as.data.frame(
+              plotdata %>% 
+                distinct(paramname,covname,pool_effect) %>% 
+                mutate(xintercept=pool_effect)
+),
+            table_title = "Point Estimates and assciated 95% CI"
+
+)
+
+```
+
+As always, reach out on LinkedIn or github to propose your ideas and to continue the discussion !
