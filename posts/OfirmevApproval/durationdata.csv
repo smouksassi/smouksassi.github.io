@@ -1,0 +1,40 @@
+﻿agegroup,dose,freq,type,time
+Adolescents,15 mg/kg,q6h,above 30,0.608695652
+Neonates,15 mg/kg,q12h,above 30,0.434
+Neonates,15 mg/kg,q8h,above 30,1.99
+Neonates,15 mg/kg,q6h,above 30,5.971013077
+Neonates,12.5 mg/kg,q12h,above 30,0.115941321
+Neonates,12.5 mg/kg,q8h,above 30,0.782608696
+Neonates,12.5 mg/kg,q6h,above 30,3.188404382
+Neonates,10 mg/kg,q12h,above 30,0
+Neonates,10 mg/kg,q8h,above 30,0.463767408
+Neonates,10 mg/kg,q6h,above 30,1.62318699
+Neonates,7.5 mg/kg,q12h,above 30,0
+Neonates,7.5 mg/kg,q8h,above 30,0.115941321
+Neonates,7.5 mg/kg,q6h,above 30,0.173913043
+Adolescents,15 mg/kg,q6h,within 10 and 30,7.304349949
+Neonates,15 mg/kg,q12h,within 10 and 30,10.60869778
+Neonates,15 mg/kg,q8h,within 10 and 30,16.69565217
+Neonates,15 mg/kg,q6h,within 10 and 30,16.20289784
+Neonates,12.5 mg/kg,q12h,within 10 and 30,8.057969599
+Neonates,12.5 mg/kg,q8h,within 10 and 30,15.33333263
+Neonates,12.5 mg/kg,q6h,within 10 and 30,17.56521739
+Neonates,10 mg/kg,q12h,within 10 and 30,5.217391304
+Neonates,10 mg/kg,q8h,within 10 and 30,11.73913256
+Neonates,10 mg/kg,q6h,within 10 and 30,16.57970873
+Neonates,7.5 mg/kg,q12h,within 10 and 30,2.724636974
+Neonates,7.5 mg/kg,q8h,within 10 and 30,6.956523862
+Neonates,7.5 mg/kg,q6h,within 10 and 30,12.11594132
+Adolescents,15 mg/kg,q6h,below 10,16.17391304
+Neonates,15 mg/kg,q12h,below 10,13.10144786
+Neonates,15 mg/kg,q8h,below 10,5.275360904
+Neonates,15 mg/kg,q6h,below 10,1.797100034
+Neonates,12.5 mg/kg,q12h,below 10,15.85507176
+Neonates,12.5 mg/kg,q8h,below 10,7.971013077
+Neonates,12.5 mg/kg,q6h,below 10,3.130434783
+Neonates,10 mg/kg,q12h,below 10,18.89855002
+Neonates,10 mg/kg,q8h,below 10,11.9130456
+Neonates,10 mg/kg,q6h,below 10,5.942028278
+Neonates,7.5 mg/kg,q12h,below 10,21.30434783
+Neonates,7.5 mg/kg,q8h,below 10,17.15941958
+Neonates,7.5 mg/kg,q6h,below 10,11.68115871
