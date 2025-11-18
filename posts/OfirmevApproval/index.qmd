@@ -289,4 +289,4 @@ library(ggforce)
 
 I opted for different decisions on some of the visual aspects e.g. I removed the separate facet for the reference Adolescents as kept the data as reference vertical lines with labels showing their values. I labeled the reference lines without an angle and since we now know what the FDA ended up approving I am encircled it using `ggforce::geom_mark_circle`.
 
-What would be your take to illustrate duration of time above thresholds to compare dosing regimens? As always, reach out at the [LinkedIn Post](https://www.linkedin.com/in/samer-mouksassi-pharm-d-phd-fcp-571555b/) or github to propose your ideas and to continue the discussion !
+What would be your take to illustrate duration of time above thresholds to compare dosing regimens? As always, reach out at the [LinkedIn Post](https://www.linkedin.com/feed/update/urn:li:activity:7396334215224578049/) or github to propose your ideas and to continue the discussion !
