@@ -192,9 +192,10 @@ gof_etacovplot <- function(dataset= xpdb_xdata,
                                          "Sex","Digoxin","Med2","Med1/2"),
                            etas = c("ηCL","ηVc","ηKa"),
                            eta_shk = eta_shk_model,
-                           smooth_method = "loess"){
+                           smooth_method = "loess",
+                           mapping = aes(color = SEX, fill = SEX)){
   ggduo(dataset, covariates,etas,
-        mapping = aes(color = SEX, fill = SEX),
+       mapping = mapping,
         columnLabelsX = covlabels,
         columnLabelsY = paste0(names(eta_shk),"\n",eta_shk,"%"),
         xProportions = "auto",
@@ -230,7 +231,8 @@ gof_etacovplot(dataset= xpdb_xdata,
                covariates = c("AGE", "WT","SEXN") ,
                covlabels = c("Age\n(years)",
                              "Weight (kg)", "CRCL (ml/min)"),
-               etas = c("ηCL","ηVc","ηKa"))
+               etas = c("ηCL","ηVc","ηKa"),
+               mapping = aes(color = SEX, fill = SEX))
 
 ```
 
@@ -318,6 +320,35 @@ And with custom functions highlighting the panel if it is significant:
 ```
 
 Finally, in projects where we have lot of parameters, covariates, models we might wrap the plot generation into a loop that auto-generates tabs:
+
+```{r}
+#| eval: false
+#| message: false 
+#| warning: false
+#| paged-print: true   
+#| code-fold: false
+
+# ::: panel-tabset
+# ```{r, dev='ragg_png' , results='asis'}
+# #| message: false
+# #| warning: false
+# #| paged-print: true
+# #| 
+for (i in 1:length(eta_shk_model)){
+  cat(paste0("### ", names(eta_shk[i]), "\n"))
+  p1 <- gof_etacovplot(dataset= xpdb_xdata,
+                       covariates = c("WT","SEXN","MED1N") ,
+                       covlabels = c("Weight (kg)", "Sex", "Digoxin"),
+                       etas = names(eta_shk_model)[i],
+                       eta_shk = eta_shk_model[i]
+  )
+  print(p1)
+  cat("\n\n")
+}
+# ```
+#:::
+```
+
 
 ::: panel-tabset
 ```{r, dev='ragg_png' , results='asis'}
