@@ -11,7 +11,8 @@ format:
 
 In pharmacometrics models we often have model parameters modeled as a function of one or multiple covariates:
 
-$$CL = \color{blue}{POPCL} \times \left( \frac { \color{green}{Weight}} {70}\right)^\color{blue}{dWTdCL}\times \left( \frac { \color{green}{Age}} {\color{green}{Age} + \color{blue}{Age50}}\right)\times exp(\color{red}\eta\color{red}{CL})$$
+
+$$CL = \color{blue}{POPCL}\times\left(\frac {\color{green}{Weight}} {70}\right)^\color{blue}{dWTdCL}\times\left(\frac{\color{green}{Age}}{\color{green}{Age} + \color{blue}{Age50}}\right)\times e^{\color{red}\eta\color{red}{CL}}$$
 
 In this example the parameter clearance (CL) has two covariates effects:
 
@@ -29,11 +30,11 @@ $$CV(\%)=\sqrt{\left(e^{\omega^2}-1\right)}$$ Again, what would be the standard 
 
 The delta method is a statistical technique to approximate the standard error of a function of an estimator, such as a ratio or the log odds ratio or the inverse logit of a constrained parameter, using a first-order Taylor series expansion. It's especially useful when the function involves more than one parameter and/or the equation is complex such as there is no straightforward analytically computed solution. It relies on the original variable(s), the function form and the partial derivative of the function with respect to the parameters and the variance covariance matrix of the involved parameters. It has been used in multiple fields, including pharmacometrics, that the delta method matches the gold standard (simulation with uncertainty) even with [longitudinal model based meta-analysis (MBMA) nonlinear models](https://www.page-meeting.org/wp-content/uploads/pdf_assets/6769-Poster_PAGE_2012_MegBennetts.pdf). Also, in this important paper from the FDA entitled [Clarification on Precision Criteria to Derive Sample Size When Designing Pediatric Pharmacokinetic Studies](https://accp1.onlinelibrary.wiley.com/doi/10.1177/0091270011422812) R code to compute the delta method for derived variables was provided in **APPENDIX 3. R code for delta method to estimate standard error for a derived variable:**
 
-$$log(CL) = \color{blue}{3.7421} + \color{blue}{1.0078}\times\left( \frac { \color{green}{wt}} {70}\right)+log\left(\color{green}{age}/(\color{green}{age}+4.8422)\right)$$
+$$log(CL) = \color{blue}{3.7421} + \color{blue}{1.0078}\times\left( \frac { \color{green}{Weight}} {70}\right)+log\left(\color{green}{Age}/(\color{green}{Age}+4.8422)\right)$$
 
 ```{r}
 #| code-fold: false
-# Assume covariate model CL=theta1*(wt/70)**theta2*age/(age+theta3) and
+# Assume covariate model CL=theta1*(wt/70)** theta2*age/(age+theta3) and
 # Log of CL was modeled as LCL=thetap1+theta2*(wt/70)+log(age/(age+theta3))
 #input parameter estimates
  thetap1=3.7421
