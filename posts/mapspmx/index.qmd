@@ -1,9 +1,9 @@
 ---
-title: "Maps and Projections"
+title: "Maps, Projections and a Globe"
 author: "Samer Mouksassi"
-date: "2025-11-13"
+date: "2025-12-13"
 categories: [3D, visualization, maps]
-image: "coolmap.png"
+image: "animatedmap.gif"
 format:
  html:
   code-fold: true
@@ -266,6 +266,15 @@ ggplot(dat, aes(x=as.factor(Year), status, fill = status)) +
         legend.position.inside =  c(0.9, 0.1))+
   guides(fill = guide_legend(reverse = TRUE))
 
+```
+
+\*Africa outline plot:
+
+```{r}
+#| message: false
+#| warning: false
+#| paged-print: true
+
 world <- ne_countries(scale = "medium", returnclass = "sf")
 africa <- world[world$continent == "Africa", ]
 africa_boundary <- st_union(africa) # Combine all African countries into a single boundary (dissolve boundaries)
@@ -273,18 +282,15 @@ afr <- ggplot() +
   geom_sf(data = africa_boundary, fill = NA, color = "black", linewidth = 0.8) +
   theme_void() 
 afr
-
 ```
 
 For context this was the plot that was included in the paper:
 
 ![](PSP4-14-407-g002.jpg)
 
-When the COVID-19 pandemic started, there were several live dashboards floating around and I wanted to challenge my dashboarding/R Shiny skills building my own. A gif animation of how this dashboard looked like in 2020 is shown below. It had interactive filters, a map with a 3D/2D projection. Cross-filtering between widgets and sparklines. The repo lives [here](https://github.com/smouksassi/covid19dashboard) but note that some links to publicly available databases at the time might be broken.
+When the COVID-19 pandemic started, there were several live dashboards floating around and I wanted to challenge my dashboarding/R Shiny skills building my own.
 
-![](dashboard.gif)
-
-This how I produced the `plotly` 3D gobe using the last data snapshot I could find on github:
+This how I produced the `plotly` 3D globe using the last data snapshot I could find on github:
 
 ```{r}
 #| message: false
@@ -350,7 +356,7 @@ plot_geo(alldatalastpoint, lat = ~ Lat, lon = ~ Long) %>% add_markers(
   
 ```
 
-Have a look at the dashboard source code if you want to see how cross filtering and interactivity were handled. Another nice feature was the table that had sparklines and reproduced below:
+Another nice feature was the table that had sparklines and reproduced below:
 
 ```{r}
 #| message: false
@@ -361,7 +367,7 @@ library(sparkline)
 library(htmlwidgets)
 staticRender_cb <-
   htmlwidgets::JS('function(){HTMLWidgets.staticRender();}')
-getDependency('sparkline')
+#getDependency('sparkline')
 
 cases_sparkline_data <- alldata
 keycols = c("countryprovince", "country_region", "province", "Date")
@@ -418,3 +424,10 @@ datasparkline <-  datasparkline[, c("country_region", "province",
    DTsparkline
 
 ```
+Have a look at the dashboard source code, if you want to see how cross filtering and interactivity were handled. A gif animation of how this dashboard looked like in 2020 is shown below. It had interactive filters, the map with a 3D/2D projection. Cross-filtering between widgets and sparklines.
+
+![](dashboard.gif)
+
+The repo lives [here](https://github.com/smouksassi/covid19dashboard) but note that some links to publicly available databases at the time might be broken.
+
+In the blog, I have shared my experience with maps, dashboards, interactivity via Shiny, Plotly, htmlwidgets, sparklines and DT interactive tables. Have you used advanced interactivity in your Dashboards? Maps? what is your go to solution/service provider?
