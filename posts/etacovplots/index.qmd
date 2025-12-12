@@ -230,7 +230,7 @@ gof_etacovplot <- function(dataset= xpdb_xdata,
 gof_etacovplot(dataset= xpdb_xdata,
                covariates = c("AGE", "WT","SEXN") ,
                covlabels = c("Age\n(years)",
-                             "Weight (kg)", "CRCL (ml/min)"),
+                             "Weight\n(kg)", "Sex"),
                etas = c("ηCL","ηVc","ηKa"),
                mapping = aes(color = SEX, fill = SEX))
 
@@ -348,7 +348,6 @@ for (i in 1:length(eta_shk_model)){
 # ```
 #:::
 ```
-
 
 ::: panel-tabset
 ```{r, dev='ragg_png' , results='asis'}
