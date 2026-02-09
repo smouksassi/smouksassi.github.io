@@ -1,8 +1,11 @@
-
+source("gompertz_helpers.R")
+library(ggplot2)
+library(dplyr)
+library(tidyr)
 TTPAUC28  <- 400 # computed dynamically from the TTP curve
-hazard_fn_auc28 <- function(t){ exp(-11.8 -0.0270*t +
-                                      2.45*log(t+1) +
-                                      0.0353*((TTPAUC28-400)/10) ) }
+hazard_fn_auc28 <- function(t){ exp(-12 -0.03*t +
+                                      3*log(t+1) +
+                                      0.03*((TTPAUC28-400)/10) ) }
 
 Ftauc28 <- apply_survival_function(seq(0,120,0.1),hazard_fn_auc28,
                                    supplied_fn_type="h",
@@ -57,8 +60,11 @@ df3$AUC <- 200
 
 dft<- rbind(df1,df2,df3)
 dft$AUC<-as.factor(dft$AUC)
-ggplot(dft %>% 
-         gather(key,value,S_t,h_t,F_t,factor_key = TRUE))+
+
+dft<- dft %>% 
+  gather(key,value,h_t,F_t,S_t,factor_key = TRUE)
+dft$key<- factor(dft$key,labels = c("h(t)","F(t)","S(t)"))
+ggplot(dft)+
   geom_line(aes(x=Time,y=value,linetype=AUC))+
   labs(y="Survival Analysis Functions",
        linetype="TTP AUC",
