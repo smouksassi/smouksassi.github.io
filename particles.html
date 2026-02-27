@@ -1,0 +1,151 @@
+<!-- custom-footer.html -->
+<div id="particles-js" aria-hidden="true"></div>
+
+<!-- Icon-only toggle with micro-indicator -->
+<button id="particles-toggle"
+        aria-pressed="true"
+        aria-label="Toggle background particle animation"
+        title="Toggle background particles">
+  <!-- SVG icon: cluster of dots (decorative) -->
+  <span class="particles-icon" aria-hidden="true">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" role="img">
+      <circle cx="6" cy="7" r="1.6" fill="currentColor"/>
+      <circle cx="12" cy="5" r="1.9" fill="currentColor"/>
+      <circle cx="18" cy="8" r="1.3" fill="currentColor"/>
+      <circle cx="9" cy="13" r="1.8" fill="currentColor"/>
+      <circle cx="15" cy="15" r="2.1" fill="currentColor"/>
+    </svg>
+  </span>
+
+  <!-- micro-indicator: a tiny dot that pulses when active -->
+  <span id="particles-indicator" aria-hidden="true"></span>
+</button>
+
+<!-- particles lib (CDN) -->
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+<script>
+(function () {
+  const STORAGE_KEY = 'particlesEnabled';
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const defaultEnabled = !prefersReducedMotion;
+
+  function getStored() {
+    try {
+      const v = localStorage.getItem(STORAGE_KEY);
+      return v === null ? defaultEnabled : (v === 'true');
+    } catch (e) { return defaultEnabled; }
+  }
+  function setStored(val) {
+    try { localStorage.setItem(STORAGE_KEY, String(val)); } catch (e) { /* ignore */ }
+  }
+
+  function destroyParticles() {
+    if (window.pJSDom && Array.isArray(window.pJSDom)) {
+      window.pJSDom.forEach(function (p) {
+        if (p && p.pJS && p.pJS.fn && p.pJS.fn.vendors && typeof p.pJS.fn.vendors.destroypJS === 'function') {
+          p.pJS.fn.vendors.destroypJS();
+        }
+      });
+      window.pJSDom = [];
+    }
+    const container = document.getElementById('particles-js');
+    if (container) {
+      while (container.firstChild) container.removeChild(container.firstChild);
+    }
+  }
+
+  function initParticles() {
+    destroyParticles(); // ensure clean slate
+    const defaultCount = (window.innerWidth < 600) ? 40 : 80;
+
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: defaultCount },
+        color: { value: "#2c3e50" },
+        shape: { type: "circle" },
+        opacity: { value: 0.45 },
+        size: { value: 6, random: true },
+        line_linked: {
+          enable: true,
+          distance: 160,
+          color: "#1a1919",
+          opacity: 0.4,
+          width: 1
+        },
+        move: { enable: true, speed: 3, out_mode: "out" }
+      },
+      interactivity: {
+        detect_on: "window",
+        events: {
+          onhover: { enable: true, mode: "repulse" },
+          onclick: { enable: true, mode: "push" }
+        },
+        modes: {
+          repulse: { distance: 110, duration: 0.4 },
+          push: { particles_nb: 3 }
+        }
+      },
+      retina_detect: true
+    });
+  }
+
+  const toggleBtn = document.getElementById('particles-toggle');
+  const indicator = document.getElementById('particles-indicator');
+
+  function updateUI(isOn) {
+    if (!toggleBtn) return;
+    toggleBtn.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    if (indicator) {
+      indicator.style.display = isOn ? 'inline-block' : 'none';
+      if (isOn) {
+        indicator.classList.add('on');
+      } else {
+        indicator.classList.remove('on');
+      }
+    }
+  }
+
+  function toggleHandler() {
+    const enabled = getStored();
+    const newState = !enabled;
+    setStored(newState);
+    updateUI(newState);
+    if (newState) initParticles(); else destroyParticles();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // Respect reduced-motion: remove toggle & disable particles if user prefers reduced motion
+    if (prefersReducedMotion) {
+      setStored(false);
+      if (toggleBtn && toggleBtn.parentNode) toggleBtn.parentNode.removeChild(toggleBtn);
+      destroyParticles();
+      return;
+    }
+
+    if (!toggleBtn) return;
+
+    // click + keyboard support
+    toggleBtn.addEventListener('click', toggleHandler);
+    toggleBtn.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        toggleHandler();
+      }
+    });
+
+    const enabled = getStored();
+    updateUI(enabled);
+    if (enabled) initParticles(); else destroyParticles();
+
+    // keep density sensible on resize
+    let resizeTimer = null;
+    window.addEventListener('resize', function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function () {
+        if (getStored()) initParticles();
+      }, 250);
+    });
+  });
+})();
+</script>

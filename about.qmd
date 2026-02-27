@@ -3,6 +3,8 @@ title: "Samer Mouksassi<br>Bio & Contact"
 image: images/profile.jpg
 html:
   page-layout: full
+  css: styles.css
+include-after-body: particles.html
 about:
   template: solana
   image-width: 10em
