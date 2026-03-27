@@ -3,7 +3,7 @@ title: "Qualification of Kidney Volume as a Drug Development Tool: Part 1"
 author: "Samer Mouksassi"
 date: "2026-03-26"
 categories: [FDA,Time to Event, Drug Development Tool]
-image: "reforesttree.png"
+image: "rforesttree.png"
 format:
  html:
   code-fold: true
@@ -115,7 +115,11 @@ ggkmrisktable(data = esrdplot, time= "time", status ="status",
               show_exptile_values_textsize = 3,
               nrisk_table_breaktimeby = 5)+
   facet_wrap2(~expname,ncol = 4,strip = strip_nested())+
-  scale_x_continuous(expand = expansion(mult=c(0,0),add=c(2,0)))
+  scale_x_continuous(expand = expansion(mult=c(0,0),add=c(2,0)))+
+ theme_bw(base_size = 14)+
+  theme( strip.background = element_rect(fill="#475c6b"),
+         strip.text =       element_text(face = "bold",color = "white"),
+         strip.text.x = element_text(size = 14))
 
 
 ```
@@ -206,7 +210,7 @@ computerelativeHR(egfrr=50,tkvr=1000,ager=40,egfrt=50,tkvt=1200,aget=40, conf.in
 
 ```
 
-And now I can use `computerelativeHR` to compute the HR for any set of ref to test values and this what powered the paper R Shiny app: [Online Interactive Hazard Ratio Calculator](https://pharmacometrics.shinyapps.io/KIreports/)
+And now I can use `computerelativeHR` to compute the HR for any set of ref to test values and this what powered the paper R Shiny app: [Online Interactive Hazard Ratio Calculator](https://pharmacometrics.shinyapps.io/KIreports/){target="_blank"}
 
 ```{r,dev='ragg_png'}
 #| message: false
