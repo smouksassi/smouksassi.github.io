@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.33">
+<meta name="generator" content="quarto-1.9.36">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,6 +11,9 @@
 
 <title>Qualification of Kidney Volume as a Drug Development Tool: Part 2 – smouksassi.github.io</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -73,10 +76,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-ea385d0e468b0dd5ea5bf0780b1290d9.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-dfb324f25d9b1687192fa8be62ac8f9c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-be3771519f21acc1c5b6733774c6dcd8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -196,7 +199,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Of note that the FDA not only replicated the findings on the submitted registry data and the data generated via cross validation, but also using clinical trial data that were only available internally to the FDA.</p>
 <p>In a first step, linear mixed-effect models with a random intercept were used to fit ln-transformed TKV values, keeping only patients with at least 2 TKV measurements separated by at least 6 months apart. Baseline TKV was defined as the first TKV measurement for a subject, whereas baseline age was the age associated with the first TKV measurement. Correlated random effects on slope and intercept was used</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(nlme)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(nlme)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>fitLME <span class="ot">&lt;-</span> <span class="fu">lme</span>(logtkv <span class="sc">~</span> MPYRS,  <span class="at">random=</span> <span class="sc">~</span> MPYRS <span class="sc">|</span> UDERID, <span class="at">data =</span> alltkvdata,</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">control =</span> <span class="fu">list</span>(<span class="at">msVerbose =</span> <span class="dv">1</span>, <span class="at">maxIter=</span><span class="dv">100</span>, <span class="at">msMaxIter=</span><span class="dv">1000</span>, <span class="at">niterEM=</span><span class="dv">1000</span>))</span>
@@ -229,12 +232,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="sc">-</span><span class="fl">5.263898609</span> <span class="sc">-</span><span class="fl">0.391074859</span> <span class="sc">-</span><span class="fl">0.006556208</span>  <span class="fl">0.378224483</span>  <span class="fl">3.912862812</span> </span>
 <span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>Number of Observations<span class="sc">:</span> <span class="dv">2484</span></span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Number of Groups<span class="sc">:</span> <span class="dv">641</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>Number of Groups<span class="sc">:</span> <span class="dv">641</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>In a second step, a placeholder time to event model is set with baseline eGFR (EGFRBSL) and Age (AGERFST) which were deemed important in the first part analysis. The log of Total Kidney Volume will enter the model via the joint modeling link. The <code>JM</code> package has a function named <code>jointModel</code> with default link parameterization = <code>value</code>. Other supported possibilities are <code>slope</code> or <code>both</code>. More advanced options can be built using the <code>derivForm</code> argument for example the AUC of log of TKV up to the time of the event. <img src="jointmodelexplain.png" class="img-fluid"></p>
 <p>The baseline risk function was chosen to be piecewise linear with equally-spaced lng.in.kn knots. The number of knots was incrementally increased till the AIC started to rise and or no improvement on the goodness of fit was noticed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(JM)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(JM)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>fitSURV <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(MPYRS, EVFL) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> EGFRBSL <span class="sc">+</span> AGERFST </span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>     ,<span class="at">data=</span>e30strictendpointj, <span class="at">x =</span> <span class="cn">TRUE</span>)</span>
@@ -310,46 +313,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>quadrature points<span class="sc">:</span> <span class="dv">3</span> </span>
 <span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>Optimization<span class="sc">:</span></span>
-<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>Convergence<span class="sc">:</span> <span class="dv">0</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>Convergence<span class="sc">:</span> <span class="dv">0</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Notice how in the output of the summary of the jointmodel the association <code>Assoct</code> between the predicted “value” and hazard of the event is highly significant &lt;0.0001. To get the hazard ratio and its 95% confidence interval we exponentiate the output of <code>confint</code>. We can also output automated diagnostics using an automatic <code>plot</code> method on JM objects.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">exp</span> (<span class="fu">confint</span>(fit.tkv_e30strict_allpiecewise12 ,<span class="at">parm=</span><span class="st">"Event"</span>))</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">exp</span> (<span class="fu">confint</span>(fit.tkv_e30strict_allpiecewise12 ,<span class="at">parm=</span><span class="st">"Event"</span>))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>            <span class="fl">2.5</span> <span class="sc">%     est.   97.5 %</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>EGFRBSL <span class="fl">1.0039020</span> <span class="fl">1.010162</span> <span class="fl">1.016460</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>AGERFST <span class="fl">0.9855089</span> <span class="fl">1.000397</span> <span class="fl">1.015510</span></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit.tkv_e30strict_allpiecewise12,<span class="at">add.KM=</span>T,<span class="at">ask=</span>F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit.tkv_e30strict_allpiecewise12,<span class="at">add.KM=</span>T,<span class="at">ask=</span>F)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="gofjm.png" class="img-fluid"></p>
 <p>Next, we want to retest within the joint modeling framework whether interactions between, Age, eGFR and TKV are needed which can be done using the <code>interFact</code> argument for example below we are testing the interaction between baseline eGFR and log of TKV value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fitSURV <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(MPYRS, EVFL) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> EGFRBSL <span class="sc">+</span> AGERFST </span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fitSURV <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(MPYRS, EVFL) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> EGFRBSL <span class="sc">+</span> AGERFST </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>     ,<span class="at">data=</span>e30strictendpointj, <span class="at">x =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>fit.tkv_e30strict_all_interactiontkvegfr <span class="ot">&lt;-</span> <span class="fu">update</span>(fit.tkv_e30strict_allpiecewise12, </span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                             <span class="at">control=</span><span class="fu">list</span>(<span class="at">optimizer=</span><span class="st">"nlminb"</span>),  <span class="at">verbose=</span>T,</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">interFact =</span><span class="fu">list</span>(<span class="at">value=</span><span class="sc">~</span>EGFRBSL,<span class="at">data=</span>e30strictendpointj)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>                                           )</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit.tkv_e30strict_all_interactiontkvegfr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit.tkv_e30strict_all_interactiontkvegfr) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The final model included interaction in the survival sub model <code>EGFRBSL:AGERFST</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fitLME <span class="ot">&lt;-</span> <span class="fu">lme</span>(logtkv <span class="sc">~</span> MPYRS,  <span class="at">random=</span> <span class="sc">~</span> MPYRS <span class="sc">|</span> UDERID, <span class="at">data =</span> alltkvdatajfitmean,</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fitLME <span class="ot">&lt;-</span> <span class="fu">lme</span>(logtkv <span class="sc">~</span> MPYRS,  <span class="at">random=</span> <span class="sc">~</span> MPYRS <span class="sc">|</span> UDERID, <span class="at">data =</span> alltkvdatajfitmean,</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">control =</span> <span class="fu">list</span>(<span class="at">msVerbose =</span> <span class="dv">1</span>, <span class="at">maxIter=</span><span class="dv">100</span>, <span class="at">msMaxIter=</span><span class="dv">1000</span>, <span class="at">niterEM=</span><span class="dv">1000</span>))</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fitSURV <span class="ot">&lt;-</span> <span class="fu">coxph</span>(<span class="fu">Surv</span>(MPYRS, EVFL) <span class="sc">~</span> <span class="dv">1</span> <span class="sc">+</span> EGFRBSL <span class="sc">+</span> AGERFST <span class="sc">+</span> EGFRBSL<span class="sc">:</span>AGERFST,</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">data=</span>e30strictendpointj, <span class="at">x =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>jointfinalmodelval <span class="ot">&lt;-</span> <span class="fu">jointModel</span>(fitLME, fitSURV,<span class="at">timeVar=</span><span class="st">"MPYRS"</span>,<span class="at">verbose=</span>F,</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">method =</span><span class="st">"piecewise-PH-aGH"</span>,<span class="at">lng.in.kn=</span><span class="dv">12</span>,</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>                                 <span class="at">control=</span><span class="fu">list</span>(<span class="at">optimizer=</span><span class="st">"nlminb"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                                 )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>                                 )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>The model was also internally validated using standard 5-fold cross validation and the FDA took the extra step to externally validated against data I have never seen. Below I include the figures that were part of the paper:</p>
 <p><img src="gr2.jpg" class="img-fluid"> <img src="gr3.jpg" class="img-fluid"></p>
 <p>The most exciting application of Joint Models is the capability to simulate trajectories of time and illustrate its impact on the probability of the event:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alltkvdatajfitmean[alltkvdatajfitmean <span class="sc">$</span>UDERID<span class="sc">==</span><span class="dv">2250</span>,]</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>alltkvdatajfitmean[alltkvdatajfitmean <span class="sc">$</span>UDERID<span class="sc">==</span><span class="dv">2250</span>,]</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># conditional survival probabilities for Patient 2250  using Monte Carlo</span></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># we set the seed for reproducibility</span></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>ND <span class="ot">&lt;-</span> alltkvdatajfitmean[alltkvdatajfitmean<span class="sc">$</span>UDERID <span class="sc">==</span> <span class="dv">2250</span> , ]</span>
@@ -367,7 +370,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="fu">arrows</span>(ND<span class="sc">$</span>LASTTIMESEEN[<span class="dv">1</span>], <span class="dv">1</span>, ND<span class="sc">$</span>LASTTIMESEEN[<span class="dv">1</span>], <span class="fl">0.9</span>, <span class="at">col=</span> <span class="st">"red"</span>,<span class="at">length=</span><span class="fl">0.1</span>)</span>
 <span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>}</span>
 <span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"log Kidney Volume"</span>, <span class="at">side =</span> <span class="dv">2</span>, <span class="at">line =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Survival Probability"</span>, <span class="at">side =</span> <span class="dv">4</span>, <span class="at">line =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mtext</span>(<span class="st">"Survival Probability"</span>, <span class="at">side =</span> <span class="dv">4</span>, <span class="at">line =</span> <span class="sc">-</span><span class="dv">1</span>, <span class="at">outer =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><img src="dynamicpredictions.png" class="img-fluid"></p>
 <p>We can also simulate clinical trial inclusion criteria and see how these patients TKV trajectories and probabilities of events can be projected:</p>
@@ -376,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gganimate)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># we set the seed for reproducibility</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>ND <span class="ot">&lt;-</span> alltkvdatajfitmean[alltkvdatajfitmean<span class="sc">$</span>UDERID <span class="sc">==</span> <span class="dv">1557</span> , ]</span>
@@ -472,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-94"><a href="#cb7-94" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.y.left =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
 <span id="cb7-95"><a href="#cb7-95" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transition_states</span>(frame, <span class="at">transition_length =</span> <span class="dv">3</span>,</span>
 <span id="cb7-96"><a href="#cb7-96" aria-hidden="true" tabindex="-1"></a>                    <span class="at">state_length =</span> <span class="dv">1</span>,</span>
-<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>                    <span class="at">wrap =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-97"><a href="#cb7-97" aria-hidden="true" tabindex="-1"></a>                    <span class="at">wrap =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <p><img src="dynamicpred.gif" class="img-fluid"></p>
@@ -531,13 +534,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -552,7 +556,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/smouksassi\.github\.io\/\/");
+        var filterRegex = new RegExp("https:\/\/smouksassi\.github\.io\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
